@@ -1,3 +1,6 @@
+require 'json'
+require 'byebug'
+
 class OpenWeatherMap::City
   include Comparable
   attr_reader :id, :lat, :lon, :name
@@ -8,6 +11,16 @@ class OpenWeatherMap::City
     @lon = lon
     @name = name
     @temp_k = temp_k
+  end
+
+  def self.parse(hash)
+    new(
+      hash[:id],
+      hash[:coord][:lat],
+      hash[:coord][:lon],
+      hash[:name],
+      hash[:main][:temp]
+    )
   end
 
   def temp
