@@ -1,5 +1,4 @@
 require 'json'
-require 'byebug'
 
 class OpenWeatherMap::City
   include Comparable
@@ -15,11 +14,11 @@ class OpenWeatherMap::City
 
   def self.parse(hash)
     new(
-      hash[:id],
-      hash[:coord][:lat],
-      hash[:coord][:lon],
-      hash[:name],
-      hash[:main][:temp]
+      hash['id'],
+      hash['coord']['lat'],
+      hash['coord']['lon'],
+      hash['name'],
+      hash['main']['temp']
     )
   end
 

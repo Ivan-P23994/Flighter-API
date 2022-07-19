@@ -49,7 +49,7 @@ RSpec.describe OpenWeatherMap::City do
 
   describe '#parse' do
     it 'correctly initializes provided hash values' do
-      hash = { coord: { lat: 145.77, lon: -16.92 }, main: { temp: 300.15 }, id: 217_279_7, name: 'Cairns' }    # rubocop:disable Layout/LineLength
+      hash = { 'coord' => { 'lat' => 145.77, 'lon' => -16.92 }, 'main' => { 'temp' => 300.15 }, 'id' => 217_279_7, 'name' => 'Cairns' }    # rubocop:disable Layout/LineLength
       city_instance = described_class.parse(hash)
 
       expect(city_instance.id).to eq(217_279_7)
