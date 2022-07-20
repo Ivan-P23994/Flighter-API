@@ -1,32 +1,25 @@
-require 'json'
-
 class OpenWeatherMap::City
   include Comparable
   attr_reader :id, :lat, :lon, :name
+  attr_accessor :temp_k
 
-  def initialize(id, lat, lon, name, temp_k)
-    @id = id
-    @lat = lat
-    @lon = lon
-    @name = name
-    @temp_k = temp_k
+  def initialize(hash)
+    @id = hash[:id]
+    @lat = hash[:coord][:lat]
+    @lon = hash[:coord][:lon]
+    @name = hash[:name]
+    @temp_k = hash[:main][:temp]
   end
 
   def self.parse(hash)
-    new(
-      hash['id'],
-      hash['coord']['lat'],
-      hash['coord']['lon'],
-      hash['name'],
-      hash['main']['temp']
-    )
+    new(hash)
   end
 
   def temp
-    (@temp_k - 273.15).round(2)
+    (temp_k - 273.15).round(2)
   end
 
   def <=>(other)
-    [other.temp, other.name.ord] <=> [temp, name.ord]
+    [temp, name.ord] <=> [other.temp, other.name.ord]
   end
 end
