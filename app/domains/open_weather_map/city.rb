@@ -12,7 +12,8 @@ class OpenWeatherMap::City # rubocop:disable Style/ClassAndModuleChildren
     @temp_k = hash[:main][:temp]
   end
 
-  def self.parse(hash)
+  def self.parse(raw_hash)
+    hash = raw_hash.deep_symbolize_keys
     new(hash)
   end
 
