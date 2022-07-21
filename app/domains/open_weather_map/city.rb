@@ -3,7 +3,8 @@ class OpenWeatherMap::City # rubocop:disable Style/ClassAndModuleChildren
   attr_reader :id, :lat, :lon, :name
   attr_accessor :temp_k
 
-  def initialize(hash)
+  def initialize(raw_hash)
+    hash = raw_hash.deep_symbolize_keys
     @id = hash[:id]
     @lat = hash[:coord][:lat]
     @lon = hash[:coord][:lon]
