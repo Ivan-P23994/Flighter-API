@@ -1,4 +1,4 @@
-class OpenWeatherMap::City
+class OpenWeatherMap::City # rubocop:disable Style/ClassAndModuleChildren
   include Comparable
   attr_reader :id, :lat, :lon, :name
   attr_accessor :temp_k
