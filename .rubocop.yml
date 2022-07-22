@@ -31,6 +31,9 @@ Metrics/BlockLength:
     - 'config/routes.rb'
     - 'spec/**/*_spec.rb'
 
+Style/ClassAndModuleChildren:
+   Enabled: false
+
 AllCops:
   NewCops: disable
   Exclude:
