@@ -23,6 +23,7 @@ gem 'http'
 group :development, :test do
   gem 'factory_bot_rails'
   gem 'overcommit', require: false
+  gem 'pry', '~> 0.13.1'
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
