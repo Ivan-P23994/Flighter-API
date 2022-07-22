@@ -1,4 +1,3 @@
-
 class OpenWeatherMap::City
   include Comparable
   attr_reader :id, :lat, :lon, :name
