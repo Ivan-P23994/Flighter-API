@@ -4,43 +4,43 @@ RSpec.describe OpenWeatherMap::City do
   let(:cairns) { { coord: { lat: 145.77, lon: -16.92 }, main: { temp: 300.15 }, id: 217_279_7, name: 'Cairns' } }   # rubocop:disable Layout/LineLength
 
   it 'temp method converts temperature correctly' do
-    city = described_class.new(taglag)
+    city = described_class.parse(taglag)
 
     expect(city.temp).to eq(32.85)
   end
 
   describe '#>' do
     it 'reciever has a lower temperature than other' do
-      city1 = described_class.new(babina_greda)
-      city2 = described_class.new(taglag)
+      city1 = described_class.parse(babina_greda)
+      city2 = described_class.parse(taglag)
 
       expect(city1 < city2).to eq(true)
     end
 
     it 'reciever has the same temperature but comes first alphabetically' do
-      city1 = described_class.new(taglag)
-      city2 = described_class.new(babina_greda)
+      city1 = described_class.parse(taglag)
+      city2 = described_class.parse(babina_greda)
 
       expect(city1 > city2).to eq(true)
     end
 
     it 'reciever has the same temperature and name' do
-      city1 = described_class.new(taglag)
-      city2 = described_class.new(taglag)
+      city1 = described_class.parse(taglag)
+      city2 = described_class.parse(taglag)
 
       expect(city1 == city2).to eq(true)
     end
 
     it 'reciever has the higher temperature' do
-      city2 = described_class.new(taglag)
-      city1 = described_class.new(babina_greda)
+      city2 = described_class.parse(taglag)
+      city1 = described_class.parse(babina_greda)
 
       expect(city2 > city1).to eq(true)
     end
 
     it 'reciever has the same temperature but the receiver name comes second alphabetically' do
-      city1 = described_class.new(babina_greda)
-      city2 = described_class.new(taglag)
+      city1 = described_class.parse(babina_greda)
+      city2 = described_class.parse(taglag)
       city1.temp_k = 306
 
       expect(city1 < city2).to eq(true)
