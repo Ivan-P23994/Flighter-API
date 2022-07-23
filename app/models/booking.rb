@@ -27,12 +27,12 @@ class Booking < ApplicationRecord
   validates :seat_price, presence: true, numericality: { greater_than: 0 }
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
 
-  validate :departure_can_not_be_after_arrival # , on: :create
+  validate :departure_can_not_be_after_arrival
 
   def departure_can_not_be_after_arrival
     return if flight.nil?
-    return if flight.departs_at.before?(DateTime.now)
+    return if flight.departs_at > DateTime.now
 
-    errors.add(:departs_at, 'departure time can not be in the past')
+    errors.add(:flight, 'departure time can not be in the past')
   end
 end
