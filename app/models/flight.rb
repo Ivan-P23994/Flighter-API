@@ -36,11 +36,8 @@ class Flight < ApplicationRecord
 
   def depart_time_valid?
     return if (departs_at && arrives_at).nil?
-
-    # binding.pry
     return if departs_at.before?(arrives_at)
 
-    # binding.pry
     errors.add(:departs_at, message: 'departure must be before arrival')
   end
 end
