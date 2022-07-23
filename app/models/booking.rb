@@ -30,7 +30,7 @@ class Booking < ApplicationRecord
   validate :departure_can_not_be_after_arrival # , on: :create
 
   def departure_can_not_be_after_arrival
-    return if flight.nil?
+    return if flight_id.nil?
     return if flight.departs_at < DateTime.current
 
     errors.add(:departs_at, 'departure time can not be in the past')
