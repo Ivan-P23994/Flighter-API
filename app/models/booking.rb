@@ -26,7 +26,7 @@ class Booking < ApplicationRecord
 
   validates :seat_price, presence: true, numericality: { greater_than: 0 }
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
-  validate :departure_can_not_be_after_arrival
+  # validate :departure_can_not_be_after_arrival TODO: figure out custom validations
 
   def depart_time_valid?
     return unless flight.departs_at
