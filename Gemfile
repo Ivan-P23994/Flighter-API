@@ -21,6 +21,7 @@ gem 'http'
 # gem 'rack-cors'
 
 group :development, :test do
+  gem 'blueprinter'
   gem 'factory_bot_rails'
   gem 'overcommit', require: false
   gem 'pry', '~> 0.13.1'

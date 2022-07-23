@@ -14,19 +14,17 @@ RSpec.describe Booking do
     let(:booking) { create(:booking) }
 
     it 'validates when departs_at < arrives_at' do
-      valid_booking = booking
-      valid_booking.flight.departs_at = DateTime.now + 1.year
-      valid_booking.departure_time_valid?
+      booking.flight.departs_at = DateTime.now + 1.year
+      booking.valid?
 
-      expect(valid_booking.errors.count).to eq(0)
+      expect(booking).to be_valid
     end
 
     it 'does not validate when departs_at > DateTime.now' do
-      invalid_booking = booking
-      invalid_booking.flight.departs_at -= 1.year
-      invalid_booking.departure_time_valid?
+      booking.flight.departs_at -= 1.year
+      booking.valid?
 
-      expect(invalid_booking.errors.count).to eq(1)
+      expect(booking).to be_invalid
     end
   end
 end

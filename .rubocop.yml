@@ -17,8 +17,6 @@ Style/WordArray:
 Style/SymbolArray:
   Enabled: false
 
-
-
 RSpec/ExampleLength:
   Max: 10
 
