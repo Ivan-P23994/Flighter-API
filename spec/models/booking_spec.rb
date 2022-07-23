@@ -10,21 +10,23 @@ RSpec.describe Booking do
   it { is_expected.to belong_to(:flight) }
   it { is_expected.to belong_to(:user) }
 
-  describe '#depart_time_valid?' do
+  describe '#departure_can_not_be_after_arrival' do
     let(:booking) { create(:booking) }
 
-    it 'validates to true when departs_at < arrives_at' do
+    it 'validates when departs_at < arrives_at' do
       valid_booking = booking
       valid_booking.flight.departs_at = DateTime.now - 1.year
+      valid_booking.departure_can_not_be_after_arrival
 
-      expect(valid_booking.depart_time_valid?).to eq(true)
+      expect(valid_booking.errors.count).to eq(0)
     end
 
-    it 'validates to false and throws an error when departs_at > DateTime.now' do
+    it 'does not validate when departs_at > DateTime.now' do
       invalid_booking = booking
       invalid_booking.flight.departs_at += 1.year
+      invalid_booking.departure_can_not_be_after_arrival
 
-      expect(invalid_booking.depart_time_valid?).to eq(false)
+      expect(invalid_booking.errors.count).to eq(1)
     end
   end
 end

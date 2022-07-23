@@ -16,22 +16,24 @@ RSpec.describe Flight do
   describe '#depart_time_valid' do
     let(:flight) { create(:flight) }
 
-    it 'validates to true when departs_at < arrives_at' do
-      expect(flight.depart_time_valid?).to eq(true)
+    it 'validates when departs_at < arrives_at' do
+      expect(flight.depart_time_valid?).to eq(nil)
     end
 
-    it 'validates to false and throws an error when departs_at == arrives_at' do
+    it 'does not validate when departs_at == arrives_at' do
       invalid_flight = flight
       invalid_flight.arrives_at = invalid_flight.departs_at
+      invalid_flight.depart_time_valid?
 
-      expect(flight.depart_time_valid?).to eq(false)
+      expect(invalid_flight.errors.count).to eq(1)
     end
 
-    it 'validates to false and throws an error when departs_at > arrives_at' do
+    it 'does not validate when departs_at > arrives_at' do
       invalid_flight = flight
       invalid_flight.arrives_at -= 1.year
+      invalid_flight.depart_time_valid?
 
-      expect(flight.depart_time_valid?).to eq(false)
+      expect(invalid_flight.errors.count).to eq(1)
     end
   end
 end

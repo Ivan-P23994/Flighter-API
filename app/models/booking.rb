@@ -7,8 +7,8 @@
 #  seat_price  :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  flight_id   :bigint
-#  user_id     :bigint
+#  flight_id   :bigint           not null
+#  user_id     :bigint           not null
 #
 # Indexes
 #
@@ -26,18 +26,12 @@ class Booking < ApplicationRecord
 
   validates :seat_price, presence: true, numericality: { greater_than: 0 }
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
-  validate :departure_can_not_be_after_arrival #TODO: figure out custom validations
 
-  def depart_time_valid?
-    return unless flight.departs_at
-    return true if flight.departs_at < DateTime.current
-
-    errors.add(:booking, 'departure time can not be in the past')
-    false
-  end
+  validate :departure_can_not_be_after_arrival, on: :save
 
   def departure_can_not_be_after_arrival
-    errors.add(:booking, 'departure time can not be in the past') if
-      flight.departs_at.present? && flight.departs_at < Date.current
+    return if flight.departs_at < DateTime.current
+
+    errors.add(:departs_at, 'departure time can not be in the past')
   end
 end
