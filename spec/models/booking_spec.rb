@@ -7,7 +7,7 @@ RSpec.describe Booking do
   it { is_expected.to validate_numericality_of(:seat_price).is_greater_than(0) }
   it { is_expected.to validate_numericality_of(:no_of_seats).is_greater_than(0) }
 
-  # it { is_expected.to belong_to(:flight) } dunno how to make it work
+  it { is_expected.to belong_to(:flight) }
   it { is_expected.to belong_to(:user) }
 
   describe '#depart_time_valid?' do

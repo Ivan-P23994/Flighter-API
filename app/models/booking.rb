@@ -26,7 +26,7 @@ class Booking < ApplicationRecord
 
   validates :seat_price, presence: true, numericality: { greater_than: 0 }
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
-  validate :depart_time_valid?
+  # validate :depart_time_valid?
 
   def depart_time_valid?
     return unless flight.departs_at
