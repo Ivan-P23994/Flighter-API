@@ -32,11 +32,15 @@ class Flight < ApplicationRecord
   validates :base_price, presence: true, numericality: { greater_than: 0 }
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
 
-  validate :depart_time_valid?, on: :new
+  validate :depart_time_valid? # , on: :create
 
   def depart_time_valid?
+    return if (departs_at && arrives_at).nil?
+
+    # binding.pry
     return if departs_at.before?(arrives_at)
 
+    # binding.pry
     errors.add(:departs_at, message: 'departure must be before arrival')
   end
 end
