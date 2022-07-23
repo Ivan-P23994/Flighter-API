@@ -32,7 +32,7 @@ class Flight < ApplicationRecord
   validates :base_price, presence: true, numericality: { greater_than: 0 }
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
 
-  validate :depart_time_valid?, on: :save
+  validate :depart_time_valid?, on: :new
 
   def depart_time_valid?
     return if departs_at.before?(arrives_at)
