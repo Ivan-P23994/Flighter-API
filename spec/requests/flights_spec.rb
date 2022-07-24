@@ -10,14 +10,14 @@ RSpec.describe 'Flights', type: :request do
     end
   end
 
-  describe 'Get /flights/:id' do
+  describe 'Get /flight/:id' do
     let(:flight) { create(:flight) }
 
     it 'returns a single flight' do
       get "/api/flights/#{flight.id}"
 
       expect(response).to have_http_status(:ok)
-      expect(json_body['flights']['id']).to eq(flight.id)
+      expect(json_body['flight']['id']).to eq(flight.id)
     end
   end
 
@@ -36,7 +36,7 @@ RSpec.describe 'Flights', type: :request do
              headers: api_headers
 
         expect(response).to have_http_status(:created)
-        expect(json_body['flights']).to include('name' => 'Masterdam Flight')
+        expect(json_body['flight']).to include('name' => 'Masterdam Flight')
         expect(flight.persisted?).to eq(true)
       end
     end
@@ -57,14 +57,14 @@ RSpec.describe 'Flights', type: :request do
     let(:flight) { create(:flight) }
 
     context 'when params are valid' do
-      it 'updates an flight' do
+      it 'updates a flight' do
         patch "/api/flights/#{flight.id}",
               params: { flight: { name: 'Coco Flight' } }.to_json,
               headers: api_headers
 
         expect(response).to have_http_status(:ok)
         expect(flight.persisted?).to eq(true)
-        expect(json_body['flights']['name']).to eq('Coco Flight')
+        expect(json_body['flight']['name']).to eq('Coco Flight')
       end
     end
 

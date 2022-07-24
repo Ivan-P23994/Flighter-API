@@ -1,5 +1,5 @@
 RSpec.describe 'Booking', type: :request do
-  describe 'GET api/booking' do
+  describe 'GET api/bookings' do
     before { create_list(:booking, 3) }
 
     it 'successfully returns a list of bookings' do
@@ -10,14 +10,14 @@ RSpec.describe 'Booking', type: :request do
     end
   end
 
-  describe 'GET /bookings/:id' do
+  describe 'GET /booking/:id' do
     let(:booking) { create(:booking) }
 
     it 'returns a single booking' do
       get "/api/bookings/#{booking.id}"
 
       expect(response).to have_http_status(:ok)
-      expect(json_body['bookings']['id']).to eq(booking.id)
+      expect(json_body['booking']['id']).to eq(booking.id)
     end
   end
 
@@ -36,7 +36,7 @@ RSpec.describe 'Booking', type: :request do
              headers: api_headers
 
         expect(response).to have_http_status(:created)
-        expect(json_body['bookings']).to include('no_of_seats' => 232)
+        expect(json_body['booking']).to include('no_of_seats' => 232)
         expect(booking.persisted?).to eq(true)
       end
     end
@@ -64,7 +64,7 @@ RSpec.describe 'Booking', type: :request do
 
         expect(response).to have_http_status(:ok)
         expect(booking.persisted?).to eq(true)
-        expect(json_body['bookings']['no_of_seats']).to eq(231)
+        expect(json_body['booking']['no_of_seats']).to eq(231)
       end
     end
 

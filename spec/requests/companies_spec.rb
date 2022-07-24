@@ -1,4 +1,4 @@
-RSpec.describe 'Caompanies', type: :request do
+RSpec.describe 'Companies', type: :request do
   describe 'GET api/companies' do
     before { create_list(:company, 2) }
 
@@ -17,7 +17,7 @@ RSpec.describe 'Caompanies', type: :request do
       get "/api/companies/#{company.id}"
 
       expect(response).to have_http_status(:ok)
-      expect(json_body['companies']['id']).to eq(company.id)
+      expect(json_body['company']['id']).to eq(company.id)
     end
   end
 
@@ -31,7 +31,7 @@ RSpec.describe 'Caompanies', type: :request do
              headers: api_headers
 
         expect(response).to have_http_status(:created)
-        expect(json_body['companies']).to include('name' => 'K Airlines')
+        expect(json_body['company']).to include('name' => 'K Airlines')
         expect(company.persisted?).to eq(true)
       end
     end
@@ -59,7 +59,7 @@ RSpec.describe 'Caompanies', type: :request do
 
         expect(response).to have_http_status(:ok)
         expect(company.persisted?).to eq(true)
-        expect(json_body['companies']['name']).to eq('Coco Company')
+        expect(json_body['company']['name']).to eq('Coco Company')
       end
     end
 

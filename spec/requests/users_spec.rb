@@ -10,14 +10,14 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
-  describe 'Get /users/:id' do
+  describe 'GET /users/:id' do
     let(:user) { create(:user) }
 
     it 'returns a single user' do
       get "/api/users/#{user.id}"
 
       expect(response).to have_http_status(:ok)
-      expect(json_body['users']['id']).to eq(user.id)
+      expect(json_body['user']['id']).to eq(user.id)
     end
   end
 
@@ -31,7 +31,7 @@ RSpec.describe 'Users', type: :request do
              headers: api_headers
 
         expect(response).to have_http_status(:created)
-        expect(json_body['users']).to include('first_name' => 'Ash')
+        expect(json_body['user']).to include('first_name' => 'Ash')
         expect(user.persisted?).to eq(true)
       end
     end
@@ -59,7 +59,7 @@ RSpec.describe 'Users', type: :request do
 
         expect(response).to have_http_status(:ok)
         expect(user.persisted?).to eq(true)
-        expect(json_body['users']['first_name']).to eq('Coco')
+        expect(json_body['user']['first_name']).to eq('Coco')
       end
     end
 
