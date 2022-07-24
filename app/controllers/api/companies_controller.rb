@@ -8,7 +8,7 @@ module Api
     # GET /companies/:id
     def show
       company = Company.find(params[:id])
-      render json: CompanySerializer.render(company, root: :companies)
+      render json: CompanySerializer.render(company, root: :company)
     end
 
     # POST /bookings
@@ -16,7 +16,7 @@ module Api
       company = Company.new(company_params)
 
       if company.save
-        render json: CompanySerializer.render(company, root: :companies), status: :created
+        render json: CompanySerializer.render(company, root: :company), status: :created
       else
         render json: { errors: company.errors }, status: :bad_request
       end
@@ -27,7 +27,7 @@ module Api
       company = Company.find(params[:id])
 
       if company.update(company_params)
-        render json: CompanySerializer.render(company, root: :companies), status: :ok
+        render json: CompanySerializer.render(company, root: :company), status: :ok
       else
         render json: { errors: company.errors }, status: :bad_request
       end

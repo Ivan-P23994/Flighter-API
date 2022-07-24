@@ -8,7 +8,7 @@ module Api
     # GET /Flights/:id
     def show
       flight = Flight.find(params[:id])
-      render json: FlightSerializer.render(flight, root: :flights)
+      render json: FlightSerializer.render(flight, root: :flight)
     end
 
     # POST /bookings
@@ -16,7 +16,7 @@ module Api
       flight = Flight.new(flight_params)
 
       if flight.save
-        render json: FlightSerializer.render(flight, root: :flights), status: :created
+        render json: FlightSerializer.render(flight, root: :flight), status: :created
       else
         render json: { errors: flight.errors }, status: :bad_request
       end
@@ -27,7 +27,7 @@ module Api
       flight = Flight.find(params[:id])
 
       if flight.update(flight_params)
-        render json: FlightSerializer.render(flight, root: :flights), status: :ok
+        render json: FlightSerializer.render(flight, root: :flight), status: :ok
       else
         render json: { errors: flight.errors }, status: :bad_request
       end
