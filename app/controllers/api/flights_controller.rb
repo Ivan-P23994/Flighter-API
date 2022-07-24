@@ -2,7 +2,9 @@ module Api
   class FlightsController < ApplicationController
     # GET /Flights
     def index
+      # binding.pry
       render json: FlightSerializer.render(Flight.all, root: :flights)
+      # binding.pry
     end
 
     # GET /Flights/:id
