@@ -4,6 +4,6 @@ class BookingSerializer < Blueprinter::Base
   field :flight_id
   field :seat_price
   field :no_of_seats
-  # field :created_at
-  # field :updated_at
+  field :created_at
+  field :updated_at
 end
