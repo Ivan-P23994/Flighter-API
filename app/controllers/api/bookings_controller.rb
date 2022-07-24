@@ -2,13 +2,13 @@ module Api
   class BookingsController < ApplicationController
     # GET /Bookings
     def index
-      render json: BookingSerializer.render(Booking.all, root: 'bookings'), status: :ok
+      render json: BookingSerializer.render(Booking.all, root: :bookings), status: :ok
     end
 
     # GET /Bookings/:id
     def show
       booking = Booking.find(params[:id])
-      render json: BookingSerializer.render(booking, root: 'bookings'), status: :ok
+      render json: BookingSerializer.render(booking, root: :bookings), status: :ok
     end
 
     # POST /bookings
@@ -16,7 +16,7 @@ module Api
       booking = Booking.new(booking_params)
 
       if booking.save
-        render json: BookingSerializer.render(booking, root: 'bookings'), status: :created
+        render json: BookingSerializer.render(booking, root: :bookings), status: :created
       else
         render json: { errors: booking.errors }, status: :bad_request
       end
@@ -27,7 +27,7 @@ module Api
       booking = Booking.find(params[:id])
 
       if booking.update(booking_params)
-        render json: BookingSerializer.render(booking, root: 'bookings'), status: :ok
+        render json: BookingSerializer.render(booking, root: :bookings), status: :ok
       else
         render json: { errors: booking.errors }, status: :bad_request
       end
