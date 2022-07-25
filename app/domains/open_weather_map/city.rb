@@ -35,8 +35,8 @@ module OpenWeatherMap
       response.parse.deep_symbolize_keys[:list].map { |city| OpenWeatherMap::City.parse(city) }
     end
 
-    def coldest_nearby(*cities)
-      nearby(cities).min
+    def coldest_nearby(count = 5)
+      nearby(*count).min
     end
   end
 end
