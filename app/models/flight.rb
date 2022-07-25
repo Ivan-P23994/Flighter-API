@@ -23,7 +23,6 @@
 #
 class Flight < ApplicationRecord
   belongs_to :company
-  # has_many :bookings, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :company_id }
 

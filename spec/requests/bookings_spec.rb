@@ -83,7 +83,7 @@ RSpec.describe 'Booking', type: :request do
   describe 'DELETE /api/bookings/:id' do
     let(:booking) { create(:booking) }
 
-    it 'destroys an booking' do
+    it 'destroys a booking' do
       delete "/api/bookings/#{booking.id}",
              params: booking.to_json,
              headers: api_headers

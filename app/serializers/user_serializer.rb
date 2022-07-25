@@ -5,5 +5,4 @@ class UserSerializer < Blueprinter::Base
   field :email
   field :created_at
   field :updated_at
-  # association :bookings, blueprint: BookingSerializer
 end
