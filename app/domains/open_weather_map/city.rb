@@ -27,7 +27,7 @@ module OpenWeatherMap
     end
 
     def <=>(other)
-      [temp, name.ord] <=> [other.temp, other.name.ord]
+      [temp, name] <=> [other.temp, other.name]
     end
 
     def nearby(count = 5)
