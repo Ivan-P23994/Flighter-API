@@ -36,7 +36,7 @@ module OpenWeatherMap
     end
 
     def coldest_nearby
-      nearby.sort.first
+      nearby.min
     end
   end
 end
