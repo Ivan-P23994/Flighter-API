@@ -27,7 +27,7 @@ RSpec.describe 'Users', type: :request do
 
       it 'creates an user' do
         post '/api/users',
-             params: { user: { first_name: 'Ash', email: "pok\@gmail.com" } }.to_json,
+             params: { user: { first_name: 'Ash', email: 'pk\@l.com', password: 'meaey' } }.to_json,
              headers: api_headers
 
         expect(response).to have_http_status(:created)
@@ -54,7 +54,7 @@ RSpec.describe 'Users', type: :request do
     context 'when params are valid' do
       it 'updates an user' do
         patch "/api/users/#{user.id}",
-              params: { user: { first_name: 'Coco' } }.to_json,
+              params: { user: { first_name: 'Coco', password: 'jambalaja' } }.to_json,
               headers: api_headers
 
         expect(response).to have_http_status(:ok)
@@ -71,6 +71,36 @@ RSpec.describe 'Users', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         expect(json_body['errors']['first_name'].count).to eq(2)
+      end
+    end
+
+    context 'when password is valid' do
+      it 'updates a users password' do
+        patch "/api/users/#{user.id}",
+              params: { user: { password: 'meow' } }.to_json,
+              headers: api_headers
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when password is set to an empty string ' do
+      it 'does not update the user' do
+        patch "/api/users/#{user.id}",
+              params: { user: { password: '' } }.to_json,
+              headers: api_headers
+
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+
+    context 'when password is set to nil' do
+      it 'does not update the user' do
+        patch "/api/users/#{user.id}",
+              params: { user: { password: nil } }.to_json,
+              headers: api_headers
+
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end
