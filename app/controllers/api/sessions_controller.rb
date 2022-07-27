@@ -1,14 +1,13 @@
 module Api
   class SessionsController < ApplicationController
     def create
-      user = User.find_by(email: params[:email])
-      # finds existing user, checks to see if user can be authenticated
-      if user.present? && user.authenticate(params[:password])
-      # sets up user.id sessions
-        session[:user_id] = user.id
-        render json: { status: :created, logged_in: true, user: user }
+      user = User.find_by(email: params[:session][:email])
+
+      if user.present? && user.authenticate(params[:session][:password])
+        session = Session.new(email: user.email, password: user.password)
+        render json: SessionSerializer.render(session, root: :session), status: :created
       else
-        render json: { status: :bad_request }
+        render json: { errors: { credentials: ['are invalid'] } }, status: :bad_request
       end
     end
 

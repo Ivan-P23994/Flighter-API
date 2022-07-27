@@ -16,7 +16,7 @@
 #  index_users_on_email  (email) UNIQUE
 #
 class User < ApplicationRecord
-  #before_save { self.email = email.downcase }
+  # before_save { self.email = email.downcase }
   has_secure_password
   has_secure_token
   has_many :bookings, dependent: :destroy
