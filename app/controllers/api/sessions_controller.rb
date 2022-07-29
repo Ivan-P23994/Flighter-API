@@ -12,9 +12,9 @@ module Api
     end
 
     def destroy
-      # deletes user session
-      session[:user_id] = nil
-      redirect_to root_path, notice: 'Logged Out'
+      user = User.find_by(token: request.headers['Authorization'])
+      user.regenerate_token
+      render status: :no_content
     end
   end
 end

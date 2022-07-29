@@ -1,2 +1,30 @@
 class ApplicationController < ActionController::API
+  include ActionController::MimeResponds
+
+  before_action :require_json
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+
+  def current_user
+    @current_user ||= User.find_by(token: request.headers['Authorization'])
+  end
+
+  def authenticate
+    return unless current_user.nil?
+
+    render json: { errors: { token: ['is invalid'] } }, status: :unauthorized
+  end
+
+  private
+
+  def not_found
+    respond_to do |format|
+      format.json { head :not_found }
+    end
+  end
+
+  def require_json
+    return if request.headers['Content-Type'] == 'application/json'
+
+    render json: { errors: { content_type: ['not recognized'] } }, status: :unsupported_media_type
+  end
 end
