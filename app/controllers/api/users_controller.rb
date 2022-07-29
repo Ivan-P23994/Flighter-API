@@ -1,5 +1,6 @@
 module Api
   class UsersController < ApplicationController
+    before_action :authenticate
     # GET /users
     def index
       render json: UserSerializer.render(User.all, root: :users)
@@ -41,6 +42,10 @@ module Api
 
     def user_params
       params.require(:user).permit(:id, :first_name, :last_name, :email, :password)
+    end
+
+    def authorize_user
+      render json: { message: 'Unauthorized' }, status: :unauthorized unless current_user == user
     end
   end
 end

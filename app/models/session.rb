@@ -9,7 +9,8 @@ class Session
   def valid?
     return false if user.nil?
 
-    user.valid_password?(password)
+    # TODO: make use
+    user.authenticate(password) == false
   end
 
   def user
