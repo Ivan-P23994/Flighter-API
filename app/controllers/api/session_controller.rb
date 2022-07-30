@@ -1,5 +1,6 @@
 module Api
   class SessionController < ApplicationController
+    before_action :authenticate, only: [:destroy]
     def create
       user = User.find_by(email: params[:session][:email])
 
