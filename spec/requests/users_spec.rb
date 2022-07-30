@@ -83,12 +83,12 @@ RSpec.describe 'Users', type: :request do
 
   describe 'POST /users' do
     context 'with unauthenticated user' do
-      it 'response has status code :unauthorized (401)' do
+      it 'response has status code :created (201)' do
         post '/api/users',
              params: { user: { first_name: 'Ash', email: 'pk\@l.com', password: 'meaey' } }.to_json,
              headers: api_headers('invalid_token')
 
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to have_http_status(:created)
       end
     end
 
