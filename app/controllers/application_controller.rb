@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
   private
 
   def user_not_authorized
-    render json: { errors: { token: ['you are not authorized'] } }, status: :forbidden
+    render json: { errors: { resource: ['is forbidden'] } }, status: :forbidden
   end
 
   def not_found
