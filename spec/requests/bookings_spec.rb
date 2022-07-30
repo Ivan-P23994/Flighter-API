@@ -63,7 +63,7 @@ RSpec.describe 'Booking', type: :request do
       end
     end
 
-    context 'with authenticated & unauthorized and valid values' do
+    context 'with authenticated & authorized user and valid values' do
       it 'returns a single booking with status code :ok (201)' do
         get "/api/bookings/#{booking.id}",
             headers: api_headers(user.token)
@@ -86,7 +86,6 @@ RSpec.describe 'Booking', type: :request do
   describe 'POST /api/bookings' do
     context 'with unauthenticated user' do
       it 'response has status code :unauthorized (401)' do
-        booking.id = 323
         post '/api/bookings',
              params: { booking: { no_of_seats: 232, seat_price: 1244,
                                   flight_id: flight.id,
@@ -99,7 +98,6 @@ RSpec.describe 'Booking', type: :request do
 
     context 'with authenticated & authorized user and valid values' do
       it 'creates a booking' do
-        booking.id = 323
         post '/api/bookings',
              params: { booking: { no_of_seats: 232, seat_price: 1244,
                                   flight_id: flight.id,
