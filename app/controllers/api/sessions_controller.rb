@@ -3,7 +3,7 @@ module Api
     def create
       user = User.find_by(email: params[:session][:email])
 
-      if user.present? && user.authenticate(params[:session][:password])
+      if user.present? && user.authenticate(params[:session][:password]) # TODO: shift to session
         session = Session.new(email: user.email, password: user.password)
         render json: SessionSerializer.render(session, root: :session), status: :created
       else
@@ -14,7 +14,7 @@ module Api
     def destroy
       user = User.find_by(token: request.headers['Authorization'])
       user.regenerate_token
-      render status: :no_content
+      head :no_content
     end
   end
 end

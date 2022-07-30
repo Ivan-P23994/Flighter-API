@@ -1,12 +1,10 @@
 class ApplicationController < ActionController::API
   include ActionController::MimeResponds
+  include Pundit::Authorization
 
   before_action :require_json
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
-
-  def current_user
-    @current_user ||= User.find_by(token: request.headers['Authorization'])
-  end
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def authenticate
     return unless current_user.nil?
@@ -14,7 +12,15 @@ class ApplicationController < ActionController::API
     render json: { errors: { token: ['is invalid'] } }, status: :unauthorized
   end
 
+  def current_user
+    @current_user ||= User.find_by(token: request.headers['Authorization'])
+  end
+
   private
+
+  def user_not_authorized
+    render json: { errors: { token: ['you are not authorized'] } }, status: :forbidden
+  end
 
   def not_found
     respond_to do |format|

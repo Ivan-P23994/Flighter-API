@@ -1,5 +1,6 @@
 module Api
   class CompaniesController < ApplicationController
+    before_action :authenticate
     # GET /companies
     def index
       render json: CompanySerializer.render(Company.all, root: :companies)
@@ -13,7 +14,7 @@ module Api
 
     # POST /bookings
     def create
-      company = Company.new(company_params)
+      company = authorize Company.new(company_params)
 
       if company.save
         render json: CompanySerializer.render(company, root: :company), status: :created
@@ -24,7 +25,7 @@ module Api
 
     # UPDATE
     def update
-      company = Company.find(params[:id])
+      company = authorize Company.find(params[:id])
 
       if company.update(company_params)
         render json: CompanySerializer.render(company, root: :company), status: :ok
@@ -35,7 +36,8 @@ module Api
 
     # DESTROY
     def destroy
-      Company.find(params[:id]).destroy
+      company = authorize Company.find(params[:id])
+      company.destroy
     end
 
     private
