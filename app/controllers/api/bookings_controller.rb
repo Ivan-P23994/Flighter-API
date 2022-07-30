@@ -19,9 +19,9 @@ module Api
     # POST /bookings
     def create
       # binding.pry
-      booking = authorize Booking.new(booking_params)
+      booking = Booking.new(booking_params)
 
-      if booking.save
+      if booking.save && current_user.id == booking.user_id
         render json: BookingSerializer.render(booking, root: :booking), status: :created
       else
         render json: { errors: booking.errors }, status: :bad_request

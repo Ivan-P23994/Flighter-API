@@ -14,10 +14,6 @@ class BookingPolicy < ApplicationPolicy
     admin? || owner?
   end
 
-  def create?
-    owner?
-  end
-
   def update?
     admin? || owner?
   end

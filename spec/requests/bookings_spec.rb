@@ -32,7 +32,7 @@ RSpec.describe 'Booking', type: :request do
 
       let(:user) { create(:user, role: 'admin') }
 
-      it 'successfully returns a list of bookings with status code :ok (201)' do
+      it 'successfully returns a list of bookings with status code :ok (200)' do
         get '/api/bookings',
             headers: api_headers(user.token)
 
