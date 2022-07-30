@@ -1,10 +1,10 @@
-RSpec.describe 'Sessions', type: :request do
+RSpec.describe 'Session', type: :request do
   let(:user) { create(:user) }
 
   describe 'POST api/sessions' do
     context 'when params are valid' do
       it 'creates a session' do
-        post '/api/sessions',
+        post '/api/session',
              params: { session: { email: user.email, password: user.password } }.to_json,
              headers: api_headers
 
@@ -14,7 +14,7 @@ RSpec.describe 'Sessions', type: :request do
 
     context 'when params are not valid' do
       it 'returns a :bad_request response' do
-        post '/api/sessions',
+        post '/api/session',
              params: { session: { email: user.email, password: 'wrong_password' } }.to_json,
              headers: api_headers
 
@@ -27,7 +27,7 @@ RSpec.describe 'Sessions', type: :request do
     # let(:user) { create(:user, password: 'warwick') }
     context 'when params are valid' do
       it 'deletes the current session' do
-        delete "/api/sessions/#{user.id}",
+        delete "/api/session/#{user.id}",
                headers: api_headers(user.token)
 
         expect(response).to have_http_status(:no_content)
