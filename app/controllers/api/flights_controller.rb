@@ -1,6 +1,6 @@
 module Api
   class FlightsController < ApplicationController
-    before_action :authenticate
+    before_action :authenticate, except: [:index, :show]
 
     # GET /Flights
     def index
