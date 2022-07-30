@@ -7,11 +7,11 @@ RSpec.describe 'Companies', type: :request do
     before { create_list(:company, 2) }
 
     context 'with unauthenticated user' do
-      it 'response has status code :unauthorized (401)' do
+      it 'response has status code :ok (200)' do
         get '/api/companies',
             headers: api_headers('invalid_token')
 
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to have_http_status(:ok)
       end
     end
 
@@ -38,11 +38,11 @@ RSpec.describe 'Companies', type: :request do
 
   describe 'GET api/companies/:id' do
     context 'with unauthenticated user' do
-      it 'response has status code :unauthorized (401)' do
+      it 'response has status code :ok (200)' do
         get "/api/companies/#{company.id}",
             headers: api_headers('invalid_token')
 
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to have_http_status(:ok)
       end
     end
 
