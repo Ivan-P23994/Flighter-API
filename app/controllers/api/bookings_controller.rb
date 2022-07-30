@@ -18,6 +18,7 @@ module Api
 
     # POST /bookings
     def create
+      # binding.pry
       booking = authorize Booking.new(booking_params)
 
       if booking.save
