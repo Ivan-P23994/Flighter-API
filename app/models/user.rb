@@ -23,7 +23,7 @@ class User < ApplicationRecord
   has_many :bookings, dependent: :destroy
 
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-  # validates :token, uniqueness: true
+  # validates :token, uniqueness: true  --> Uniqueness validation should have a unique index in db..
   validates :password, presence: true, length: { minimum: 3 }, on: :create
   validates :first_name, presence: true, length: { minimum: 2 }
   validates :email, presence: true,

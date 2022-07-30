@@ -1,6 +1,6 @@
 module Api
   class CompaniesController < ApplicationController
-    before_action :authenticate
+    before_action :authenticate, except: [:index, :show]
     # GET /companies
     def index
       render json: CompanySerializer.render(Company.all, root: :companies)
