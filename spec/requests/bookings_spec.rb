@@ -1,5 +1,6 @@
 RSpec.describe 'Booking', type: :request do
   let(:user) { create(:user) }
+  let(:user1) { create(:user) }
   let(:flight) { create(:flight) }
   let(:booking) { create(:booking, user_id: user.id) }
 
@@ -15,8 +16,21 @@ RSpec.describe 'Booking', type: :request do
       end
     end
 
-    context 'with authenticated user and valid values' do
+    context 'with authenticated & unauthorized user' do
       before { create_list(:booking, 3) }
+
+      it 'response has status code :forbidden (403)' do
+        get '/api/bookings',
+            headers: api_headers(user.token)
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with authenticated & authorized user and valid values' do
+      before { create_list(:booking, 3) }
+
+      let(:user) { create(:user, role: 'admin') }
 
       it 'successfully returns a list of bookings with status code :ok (201)' do
         get '/api/bookings',
@@ -40,7 +54,16 @@ RSpec.describe 'Booking', type: :request do
       end
     end
 
-    context 'with authenticated user and valid values' do
+    context 'with authenticated & unauthorized user' do
+      it 'response has status code :forbidden (403)' do
+        get "/api/bookings/#{booking.id}",
+            headers: api_headers(user1.token)
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with authenticated & unauthorized and valid values' do
       it 'returns a single booking with status code :ok (201)' do
         get "/api/bookings/#{booking.id}",
             headers: api_headers(user.token)
@@ -50,7 +73,7 @@ RSpec.describe 'Booking', type: :request do
       end
     end
 
-    context 'with authenticated user and invalid values' do
+    context 'with authenticated & unauthorized and invalid values' do
       it 'response has status code :not_found (404)' do
         get '/api/bookings/42',
             headers: api_headers(user.token)
@@ -74,7 +97,7 @@ RSpec.describe 'Booking', type: :request do
       end
     end
 
-    context 'with authenticated user and valid values' do
+    context 'with authenticated & authorized user and valid values' do
       it 'creates a booking' do
         booking.id = 323
         post '/api/bookings',
@@ -89,14 +112,14 @@ RSpec.describe 'Booking', type: :request do
       end
     end
 
-    context 'with authenticated user and invalid values' do
-      it 'returns 400 Bad Request' do
+    context 'with authenticated & authorized user and invalid values' do
+      it 'response has status code :bad_request (400)' do
         post '/api/bookings',
-             params: { booking: { no_of_seats: nil } }.to_json,
+             params: { booking: { no_of_seats: nil, user_id: user.id } }.to_json,
              headers: api_headers(user.token)
 
         expect(response).to have_http_status(:bad_request)
-        expect(json_body['errors'].count).to eq(4)
+        expect(json_body['errors'].count).to eq(3)
       end
     end
   end
@@ -112,7 +135,17 @@ RSpec.describe 'Booking', type: :request do
       end
     end
 
-    context 'with authenticated user and valid values' do
+    context 'with authenticated & unauthorized user' do
+      it 'response has status code :unauthorized (403)' do
+        patch "/api/bookings/#{booking.id}",
+              params: { booking: { user_id: user1.id, no_of_seats: 231 } }.to_json,
+              headers: api_headers(user.token)
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with authenticated & authorized user and valid values' do
       it 'updates a booking with status code :ok (200)' do
         patch "/api/bookings/#{booking.id}",
               params: { booking: { no_of_seats: 231 } }.to_json,
@@ -147,7 +180,17 @@ RSpec.describe 'Booking', type: :request do
       end
     end
 
-    context 'with authenticated user and valid values' do
+    context 'with authenticated & unauthorized user' do
+      it 'response has status code :unauthorized (403)' do
+        delete "/api/bookings/#{booking.id}",
+               params: booking.to_json,
+               headers: api_headers(user1.token)
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with authenticated & authorized user and valid values' do
       it 'destroys a booking' do
         delete "/api/bookings/#{booking.id}",
                params: booking.to_json,

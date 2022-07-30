@@ -4,21 +4,21 @@ module Api
 
     # GET /Bookings
     def index
+      authorize current_user
+
       render json: BookingSerializer.render(Booking.all, root: :bookings), status: :ok
     end
 
     # GET /Bookings/:id
     def show
-      booking = Booking.find(params[:id])
-      user_owns_booking?(booking)
+      booking = authorize Booking.find(params[:id])
 
       render json: BookingSerializer.render(booking, root: :booking), status: :ok
     end
 
     # POST /bookings
     def create
-      booking = Booking.new(booking_params)
-      user_owns_booking?(booking) if booking.valid?
+      booking = authorize Booking.new(booking_params)
 
       if booking.save
         render json: BookingSerializer.render(booking, root: :booking), status: :created
@@ -30,7 +30,7 @@ module Api
     # PATCH
     def update
       booking = Booking.find(params[:id])
-      return if user_owns_booking?(booking) && valid_booking_params? == false # TODO: refactor
+      valid_booking_params?(booking)
 
       if booking.update(booking_params)
         render json: BookingSerializer.render(booking, root: :booking), status: :ok
@@ -41,29 +41,23 @@ module Api
 
     # DESTROY
     def destroy
-      Booking.find(params[:id]).destroy
+      booking = authorize Booking.find(params[:id])
+      booking.destroy
     end
 
     private
 
     def booking_params
-      params.require(:booking).permit(:id, :no_of_seats, :seat_price,
-                                      :flight_id, :user_id, :updated_at, :created_at)
+      params.require(:booking).permit(:no_of_seats, :seat_price,
+                                      :flight_id, :user_id)
     end
 
-    def user_owns_booking?(booking)
-      return if booking.user_id == current_user.id
-
-      render json: { errors: { booking: ['user is not owner'] } }, status: :unauthorized
-      false
-    end
-
-    def valid_booking_params?
-      return if booking_params[:user_id].nil?
-
-      render json: { errors: { paramters: ['changing booking ownership is forbidden'] } },
-             status: :unauthorized
-      false
+    def valid_booking_params?(booking)
+      if booking_params[:user_id].nil?
+        authorize booking, :update?
+      else
+        authorize booking, :index? # index --> admin?
+      end
     end
   end
 end

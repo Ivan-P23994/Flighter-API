@@ -1,10 +1,10 @@
 module Api
   class FlightsController < ApplicationController
+    before_action :authenticate
+
     # GET /Flights
     def index
-      # binding.pry
       render json: FlightSerializer.render(Flight.all, root: :flights)
-      # binding.pry
     end
 
     # GET /Flights/:id
@@ -15,7 +15,7 @@ module Api
 
     # POST /bookings
     def create
-      flight = Flight.new(flight_params)
+      flight = authorize Flight.new(flight_params)
 
       if flight.save
         render json: FlightSerializer.render(flight, root: :flight), status: :created
@@ -26,7 +26,7 @@ module Api
 
     # UPDATE
     def update
-      flight = Flight.find(params[:id])
+      flight = authorize Flight.find(params[:id])
 
       if flight.update(flight_params)
         render json: FlightSerializer.render(flight, root: :flight), status: :ok
@@ -37,7 +37,8 @@ module Api
 
     # DESTROY
     def destroy
-      Flight.find(params[:id]).destroy
+      flight = authorize Flight.find(params[:id])
+      flight.destroy
     end
 
     private
