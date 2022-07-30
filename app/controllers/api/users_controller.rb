@@ -1,6 +1,6 @@
 module Api
   class UsersController < ApplicationController
-    before_action :authenticate
+    before_action :authenticate, except: [:create]
     # GET /users
     def index
       authorize current_user

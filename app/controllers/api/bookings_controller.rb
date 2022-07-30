@@ -21,7 +21,7 @@ module Api
       # binding.pry
       booking = Booking.new(booking_params)
 
-      if booking.save && current_user.id == booking.user_id
+      if booking.save && current_user.id == booking.user_id # kad koristim policy ne prolazi
         render json: BookingSerializer.render(booking, root: :booking), status: :created
       else
         render json: { errors: booking.errors }, status: :bad_request
