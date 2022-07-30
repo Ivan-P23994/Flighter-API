@@ -8,11 +8,11 @@ RSpec.describe 'Flights', type: :request do
     before { create_list(:flight, 4) }
 
     context 'with unauthenticated user' do
-      it 'response has status code :unauthorized (401)' do
+      it 'response has status code :ok (200)' do
         get '/api/flights',
             headers: api_headers('invalid_token')
 
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to have_http_status(:ok)
       end
     end
 
@@ -39,11 +39,11 @@ RSpec.describe 'Flights', type: :request do
 
   describe 'GET /flight/:id' do
     context 'with unauthenticated user' do
-      it 'response has status code :unauthorized (401)' do
+      it 'response has status code :ok (200)' do
         get "/api/flights/#{flight.id}",
             headers: api_headers('invalid_token')
 
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to have_http_status(:ok)
       end
     end
 
