@@ -6,7 +6,7 @@ module Api
     def index
       # authorize current_user
 
-      render json: BookingSerializer.render(Booking.all, root: :bookings), status: :ok
+      render json: BookingSerializer.render(current_user.bookings, root: :bookings), status: :ok
     end
 
     # GET /Bookings/:id
