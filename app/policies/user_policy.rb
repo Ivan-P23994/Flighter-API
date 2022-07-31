@@ -16,6 +16,10 @@ class UserPolicy < ApplicationPolicy
     admin?
   end
 
+  def create?
+    admin?
+  end
+
   def show?
     admin? || owner?
   end
