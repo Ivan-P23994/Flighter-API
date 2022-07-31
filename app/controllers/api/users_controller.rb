@@ -17,8 +17,9 @@ module Api
 
     # POST /users
     def create
+      #binding.pry
       user = User.new(user_params)
-
+      valid_create_params?(user)
       if user.save
         render json: UserSerializer.render(user, root: :user), status: :created
       else
@@ -53,6 +54,14 @@ module Api
     def valid_params?(user)
       if user_params[:role].nil?
         authorize user, :update?
+      else
+        authorize user, :index? # index --> admin?
+      end
+    end
+
+    def valid_create_params?(user)
+      if user_params[:role].nil?
+        true
       else
         authorize user, :index? # index --> admin?
       end
