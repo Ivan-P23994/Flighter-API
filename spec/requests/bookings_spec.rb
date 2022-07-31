@@ -19,11 +19,11 @@ RSpec.describe 'Booking', type: :request do
     context 'with authenticated & unauthorized user' do
       before { create_list(:booking, 3) }
 
-      it 'response has status code :forbidden (403)' do
+      it 'response has status code :ok (200)' do
         get '/api/bookings',
-            headers: api_headers2(user)
+            headers: api_headers(user.token)
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:ok)
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe 'Booking', type: :request do
 
       it 'successfully returns a list of bookings with status code :ok (200)' do
         get '/api/bookings',
-            headers: api_headers2(user)
+            headers: api_headers(user.token)
 
         expect(response).to have_http_status(:ok)
         expect(json_body['bookings'].count).to eq(3)
@@ -57,7 +57,7 @@ RSpec.describe 'Booking', type: :request do
     context 'with authenticated & unauthorized user' do
       it 'response has status code :forbidden (403)' do
         get "/api/bookings/#{booking.id}",
-            headers: api_headers2(user1)
+            headers: api_headers(user1.token)
 
         expect(response).to have_http_status(:forbidden)
       end
@@ -66,7 +66,7 @@ RSpec.describe 'Booking', type: :request do
     context 'with authenticated & authorized user and valid values' do
       it 'returns a single booking with status code :ok (201)' do
         get "/api/bookings/#{booking.id}",
-            headers: api_headers2(user)
+            headers: api_headers(user.token)
 
         expect(response).to have_http_status(:ok)
         expect(json_body['booking']['id']).to eq(booking.id)
@@ -76,7 +76,7 @@ RSpec.describe 'Booking', type: :request do
     context 'with authenticated & unauthorized and invalid values' do
       it 'response has status code :not_found (404)' do
         get '/api/bookings/42',
-            headers: api_headers2(user)
+            headers: api_headers(user.token)
 
         expect(response).to have_http_status :not_found
       end
@@ -102,7 +102,7 @@ RSpec.describe 'Booking', type: :request do
              params: { booking: { no_of_seats: 232, seat_price: 1244,
                                   flight_id: flight.id,
                                   user_id: user.id } }.to_json,
-             headers: api_headers2(user)
+             headers: api_headers(user.token)
 
         expect(response).to have_http_status(:created)
         expect(json_body['booking']).to include('no_of_seats' => 232)
@@ -114,7 +114,7 @@ RSpec.describe 'Booking', type: :request do
       it 'response has status code :bad_request (400)' do
         post '/api/bookings',
              params: { booking: { no_of_seats: nil, user_id: user.id } }.to_json,
-             headers: api_headers2(user)
+             headers: api_headers(user.token)
 
         expect(response).to have_http_status(:bad_request)
         expect(json_body['errors'].count).to eq(3)
@@ -137,7 +137,7 @@ RSpec.describe 'Booking', type: :request do
       it 'response has status code :unauthorized (403)' do
         patch "/api/bookings/#{booking.id}",
               params: { booking: { user_id: user1.id, no_of_seats: 231 } }.to_json,
-              headers: api_headers2(user)
+              headers: api_headers(user.token)
 
         expect(response).to have_http_status(:forbidden)
       end
@@ -147,7 +147,7 @@ RSpec.describe 'Booking', type: :request do
       it 'updates a booking with status code :ok (200)' do
         patch "/api/bookings/#{booking.id}",
               params: { booking: { no_of_seats: 231 } }.to_json,
-              headers: api_headers2(user)
+              headers: api_headers(user.token)
 
         expect(response).to have_http_status(:ok)
         expect(booking.persisted?).to eq(true)
@@ -159,7 +159,7 @@ RSpec.describe 'Booking', type: :request do
       it 'returns (400) :bad_request' do
         patch "/api/bookings/#{booking.id}",
               params: { booking: { no_of_seats: nil } }.to_json,
-              headers: api_headers2(user)
+              headers: api_headers(user.token)
 
         expect(response).to have_http_status(:bad_request)
         expect(json_body['errors']['no_of_seats'].count).to eq(2)
@@ -182,7 +182,7 @@ RSpec.describe 'Booking', type: :request do
       it 'response has status code :unauthorized (403)' do
         delete "/api/bookings/#{booking.id}",
                params: booking.to_json,
-               headers: api_headers2(user1)
+               headers: api_headers(user1.token)
 
         expect(response).to have_http_status(:forbidden)
       end
@@ -192,7 +192,7 @@ RSpec.describe 'Booking', type: :request do
       it 'destroys a booking' do
         delete "/api/bookings/#{booking.id}",
                params: booking.to_json,
-               headers: api_headers2(user)
+               headers: api_headers(user.token)
 
         expect(Booking.all.count).to eq(0)
       end
@@ -202,7 +202,7 @@ RSpec.describe 'Booking', type: :request do
       it 'response has status code :not_found (404)' do
         delete '/api/bookings/42',
                params: booking.to_json,
-               headers: api_headers2(user)
+               headers: api_headers(user.token)
 
         expect(response).to have_http_status(:not_found)
       end
