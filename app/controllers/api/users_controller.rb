@@ -17,7 +17,6 @@ module Api
 
     # POST /users
     def create
-      #binding.pry
       user = User.new(user_params)
       valid_create_params?(user)
       if user.save
