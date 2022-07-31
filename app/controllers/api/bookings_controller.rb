@@ -4,9 +4,7 @@ module Api
 
     # GET /Bookings
     def index
-      # authorize current_user
-
-      render json: BookingSerializer.render(current_user.bookings, root: :bookings), status: :ok
+      render json: BookingSerializer.render(user_bookings, root: :bookings), status: :ok
     end
 
     # GET /Bookings/:id
@@ -47,6 +45,10 @@ module Api
     end
 
     private
+
+    def user_bookings
+      current_user.role.nil? ? current_user.bookings : Booking.all
+    end
 
     def booking_params
       params.require(:booking).permit(:no_of_seats, :seat_price,
