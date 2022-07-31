@@ -34,6 +34,10 @@ class BookingPolicy < ApplicationPolicy
 
   private
 
+  def create_owner
+    user.nil?
+  end
+
   def owner?
     user.id == booking.user_id
   end
