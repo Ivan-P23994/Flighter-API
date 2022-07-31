@@ -26,7 +26,7 @@ RSpec.describe 'Session', type: :request do
   describe 'DELETE api/sessions/:id' do
     context 'when user is unauthorized' do
       it 'returns a :forbidden response' do
-        delete "/api/session/#{user.id}",
+        delete '/api/session',
                headers: api_headers('invalid_token')
 
         expect(response).to have_http_status(:unauthorized)
@@ -35,7 +35,7 @@ RSpec.describe 'Session', type: :request do
 
     context 'when params are valid' do
       it 'deletes the current session' do
-        delete "/api/session/#{user.id}",
+        delete '/api/session',
                headers: api_headers(user.token)
 
         expect(response).to have_http_status(:no_content)
