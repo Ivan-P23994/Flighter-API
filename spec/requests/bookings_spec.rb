@@ -28,7 +28,7 @@ RSpec.describe 'Booking', type: :request do
     end
 
     context 'with authenticated & authorized user and valid values' do
-      before { create_list(:booking, 3) }
+      before { create_list(:booking, 3, user_id: user.id) }
 
       let(:user) { create(:user, role: 'admin') }
 
