@@ -29,9 +29,8 @@ module Api
     # UPDATE
     def update
       user = User.find(params[:id])
-      valid_params?(user)
 
-      if user.update(user_params)
+      if user.update(permitted_attributes(user))
         render json: UserSerializer.render(user, root: :user), status: :ok
       else
         render json: { errors: user.errors }, status: :bad_request
@@ -47,15 +46,9 @@ module Api
     private
 
     def user_params
-      params.require(:user).permit(:id, :first_name, :last_name, :email, :password, :role)
-    end
-
-    def valid_params?(user)
-      if user_params[:role].nil?
-        authorize user, :update?
-      else
-        authorize user, :index? # index --> admin?
-      end
+      list_allowed = [:id, :first_name, :last_name, :email, :password, :role]
+      list_allowed << :role unless current_user.nil?
+      params.require(:user).permit(list_allowed)
     end
   end
 end

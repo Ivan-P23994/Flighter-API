@@ -134,12 +134,12 @@ RSpec.describe 'Booking', type: :request do
     end
 
     context 'with authenticated & unauthorized user' do
-      it 'response has status code :unauthorized (403)' do
+      it 'response has status code :ok (200)' do
         patch "/api/bookings/#{booking.id}",
               params: { booking: { user_id: user1.id, no_of_seats: 231 } }.to_json,
               headers: api_headers(user.token)
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:ok)
       end
     end
 

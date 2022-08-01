@@ -6,6 +6,14 @@ class UserPolicy < ApplicationPolicy
     @current_user = current_user
   end
 
+  def permitted_attributes
+    if admin?
+      [:id, :first_name, :last_name, :email, :password, :role]
+    else
+      [:id, :first_name, :last_name, :email, :password]
+    end
+  end
+
   class Scope < Scope
     def resolve
       scope.all

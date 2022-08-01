@@ -6,6 +6,14 @@ class BookingPolicy < ApplicationPolicy
     @booking = booking
   end
 
+  def permitted_attributes
+    if admin?
+      [:no_of_seats, :seat_price, :flight_id, :user_id]
+    else
+      [:no_of_seats, :seat_price, :flight_id]
+    end
+  end
+
   def index?
     admin?
   end
@@ -27,9 +35,13 @@ class BookingPolicy < ApplicationPolicy
   end
 
   class Scope < Scope
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      if user.role.nil?
+        scope.all
+      else
+        scope.where(user_id: user.id)
+      end
+    end
   end
 
   private
