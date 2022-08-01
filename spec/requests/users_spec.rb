@@ -128,12 +128,12 @@ RSpec.describe 'Users', type: :request do
     end
 
     context 'with authenticated & unauthorized user' do
-      it 'response has status code :forbidden (403)' do
+      it 'response has status code :ok (200)' do
         patch "/api/users/#{user.id}",
               params: { user: { first_name: 'Coco', role: 'admin' } }.to_json,
               headers: api_headers(user.token)
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:ok)
       end
     end
 

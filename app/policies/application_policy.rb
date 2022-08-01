@@ -44,10 +44,6 @@ class ApplicationPolicy
     user.role == 'admin'
   end
 
-  def current_user
-    @current_user ||= User.find_by(token: request.headers['Authorization'])
-  end
-
   class Scope
     def initialize(user, scope)
       @user = user

@@ -1,6 +1,6 @@
 class AddUniqueIndexToUserRoleColumn < ActiveRecord::Migration[6.1]
   def up
-    change_column :users, :token, :text, default: nil, unique: true
+    add_column :users, :token, :text, default: nil, index: { unique: true }
   end
 
   def down

@@ -8,7 +8,7 @@
 #  last_name       :string
 #  password_digest :text             not null
 #  role            :string
-#  token           :text             not null
+#  token           :text
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
@@ -23,7 +23,7 @@ class User < ApplicationRecord
   has_many :bookings, dependent: :destroy
 
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-  # validates :token, uniqueness: true  --> Uniqueness validation should have a unique index in db..
+  validates :token, uniqueness: true  # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :password, presence: true, length: { minimum: 3 }, on: :create
   validates :first_name, presence: true, length: { minimum: 2 }
   validates :email, presence: true,
