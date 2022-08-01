@@ -1,5 +1,6 @@
 RSpec.describe 'Users', type: :request do
   let(:user) { create(:user) }
+  let(:admin) { create(:user, role: 'admin') }
 
   describe 'GET api/users' do
     before { create_list(:user, 4) }
@@ -95,10 +96,24 @@ RSpec.describe 'Users', type: :request do
     context 'with authenticated & authorized user and valid values' do
       it 'creates a user with status code :created (201)' do
         post '/api/users',
-             params: { user: { first_name: 'Ash', email: 'pk\@l.com', password: 'meaey' } }.to_json,
+             params: { user: { first_name: 'Ash', email: 'pk\@l.com',
+                               role: 'admin', password: 'meaey' } }.to_json,
              headers: api_headers(user.token)
 
         expect(response).to have_http_status(:created)
+        expect(json_body['user']).to include('first_name' => 'Ash')
+        expect(json_body['user']).to include('role' => nil)
+        expect(user.persisted?).to eq(true)
+      end
+
+      it 'admin creates a user with status code :created (201)' do
+        post '/api/users',
+             params: { user: { first_name: 'Ash', email: 'pk\@l.com',
+                               password: 'meaey', role: 'admin' } }.to_json,
+             headers: api_headers(admin.token)
+
+        expect(response).to have_http_status(:created)
+        expect(json_body['user']).to include('role' => 'admin')
         expect(json_body['user']).to include('first_name' => 'Ash')
         expect(user.persisted?).to eq(true)
       end
