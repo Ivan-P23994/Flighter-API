@@ -28,7 +28,7 @@ module Api
 
     # UPDATE
     def update
-      user = User.find(params[:id])
+      user = authorize User.find(params[:id])
 
       if user.update(permitted_attributes(user))
         render json: UserSerializer.render(user, root: :user), status: :ok
