@@ -37,9 +37,9 @@ class BookingPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.role.nil?
-        scope.all
-      else
         scope.where(user_id: user.id)
+      else
+        scope.all
       end
     end
   end
