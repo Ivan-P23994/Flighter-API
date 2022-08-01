@@ -41,13 +41,14 @@ module Api
     def destroy
       user = authorize User.find(params[:id])
       user.destroy
+      head :no_content
     end
 
     private
 
     def user_params
       list_allowed = [:id, :first_name, :last_name, :email, :password, :role]
-      list_allowed << :role unless current_user.nil?
+      list_allowed << :role unless current_user.nil? || current_user.role == 'admin'
       params.require(:user).permit(list_allowed)
     end
   end
