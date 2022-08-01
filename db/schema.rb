@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2022_07_30_181338) do
     t.string "role"
     t.text "token"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["token"], name: "index_users_on_token", unique: true
   end
 
   add_foreign_key "bookings", "flights"
