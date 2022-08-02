@@ -6,7 +6,15 @@ class BookingPolicy < ApplicationPolicy
     @booking = booking
   end
 
-  def permitted_attributes
+  def permitted_attributes_for_update
+    if admin?
+      [:no_of_seats, :seat_price, :flight_id, :user_id]
+    else
+      [:no_of_seats, :seat_price, :flight_id]
+    end
+  end
+
+  def permitted_attributes_for_create
     if admin?
       [:no_of_seats, :seat_price, :flight_id, :user_id]
     else
