@@ -1,4 +1,5 @@
 RSpec.describe 'Booking', type: :request do
+  let(:admin) { create(:user, role: 'admin') }
   let(:user) { create(:user) }
   let(:user1) { create(:user) }
   let(:flight) { create(:flight) }
@@ -97,7 +98,7 @@ RSpec.describe 'Booking', type: :request do
     end
 
     context 'with authenticated & authorized user and valid values' do
-      it 'creates a booking' do
+      it 'user creates a booking with user id' do
         post '/api/bookings',
              params: { booking: { no_of_seats: 232, seat_price: 1244,
                                   flight_id: flight.id,
@@ -107,6 +108,32 @@ RSpec.describe 'Booking', type: :request do
         expect(response).to have_http_status(:created)
         expect(json_body['booking']).to include('no_of_seats' => 232)
         expect(booking.persisted?).to eq(true)
+      end
+
+      it 'admin creates a booking with admin id' do
+        post '/api/bookings',
+             params: { booking: { no_of_seats: 232, seat_price: 1244,
+                                  flight_id: flight.id,
+                                  user_id: admin.id } }.to_json,
+             headers: api_headers(admin.token)
+
+        expect(response).to have_http_status(:created)
+        expect(json_body['booking']).to include('no_of_seats' => 232)
+        expect(booking.persisted?).to eq(true)
+        expect(json_body['booking']).to include('user_id' => admin.id)
+      end
+
+      it 'admin creates a booking with user id' do
+        post '/api/bookings',
+             params: { booking: { no_of_seats: 232, seat_price: 1244,
+                                  flight_id: flight.id,
+                                  user_id: user.id } }.to_json,
+             headers: api_headers(admin.token)
+
+        expect(response).to have_http_status(:created)
+        expect(json_body['booking']).to include('no_of_seats' => 232)
+        expect(booking.persisted?).to eq(true)
+        expect(booking.user_id).to eq(user.id)
       end
     end
 
