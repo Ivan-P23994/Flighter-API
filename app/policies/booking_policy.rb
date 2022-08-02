@@ -17,6 +17,8 @@ class BookingPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     if admin?
       [:no_of_seats, :seat_price, :flight_id, :user_id]
+    elsif admin? && !owner?
+      [:no_of_seats, :seat_price, :flight_id, ]
     else
       [:no_of_seats, :seat_price, :flight_id]
     end
@@ -28,10 +30,6 @@ class BookingPolicy < ApplicationPolicy
 
   def show?
     admin? || owner?
-  end
-
-  def create?
-    owner?
   end
 
   def update?
@@ -55,6 +53,7 @@ class BookingPolicy < ApplicationPolicy
   private
 
   def owner?
+
     user.id == booking.user_id
   end
 end
