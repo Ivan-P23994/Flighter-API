@@ -19,6 +19,7 @@ module Api
     def create
       booking = Booking.new(booking_params)
       booking.update(permitted_attributes(booking))
+      validate_ownership(booking)
 
       if booking.save
         render json: BookingSerializer.render(booking, root: :booking), status: :created
@@ -51,6 +52,17 @@ module Api
     def booking_params
       params.require(:booking).permit(:no_of_seats, :seat_price,
                                       :flight_id, :user_id)
+    end
+
+    def validate_ownership(booking)
+      # binding.pry
+      if current_user.role.nil?
+        booking.user_id = current_user.id
+      elsif booking.user_id.nil?
+        booking.user_id == current_user.id
+      else
+        true
+      end
     end
   end
 end
