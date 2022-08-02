@@ -18,9 +18,9 @@ module Api
     # POST /bookings
     def create
       booking = Booking.new(booking_params)
-      #binding.pry
-      #booking.update(permitted_attributes(booking))
-      #binding.pry
+      # binding.pry
+      # booking.update(permitted_attributes(booking))
+      # binding.pry
 
       if booking.save
         render json: BookingSerializer.render(booking, root: :booking), status: :created
