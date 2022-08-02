@@ -3,7 +3,7 @@ module Api
     before_action :authenticate, except: [:index, :show]
     # GET /companies
     def index
-      render json: CompanySerializer.render(Company.all, root: :companies)
+      render json: CompanySerializer.render(Company.all.ascending, root: :companies)
     end
 
     # GET /companies/:id

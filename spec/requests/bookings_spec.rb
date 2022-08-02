@@ -123,6 +123,17 @@ RSpec.describe 'Booking', type: :request do
         expect(json_body['booking']).to include('user_id' => admin.id)
       end
 
+      it 'non registered user creates a user' do
+        post '/api/bookings',
+             params: { booking: { no_of_seats: 232, seat_price: 1244,
+                                  flight_id: flight.id } }.to_json,
+             headers: api_headers(user.token)
+
+        expect(response).to have_http_status(:created)
+        expect(json_body['booking']).to include('no_of_seats' => 232)
+        expect(booking.persisted?).to eq(true)
+      end
+
       it 'admin creates a booking with user id' do
         post '/api/bookings',
              params: { booking: { no_of_seats: 232, seat_price: 1244,
@@ -146,17 +157,6 @@ RSpec.describe 'Booking', type: :request do
         expect(response).to have_http_status(:bad_request)
         expect(json_body['errors'].count).to eq(3)
       end
-    end
-
-    it 'response has status code :bad_request (400)' do
-      post '/api/bookings',
-           params: { booking: { no_of_seats: 232, seat_price: 1244,
-                                flight_id: flight.id } }.to_json,
-           headers: api_headers(user.token)
-
-      expect(response).to have_http_status(:created)
-      expect(json_body['booking']).to include('no_of_seats' => 232)
-      expect(booking.persisted?).to eq(true)
     end
   end
 
