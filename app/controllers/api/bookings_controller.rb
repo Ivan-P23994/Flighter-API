@@ -55,7 +55,6 @@ module Api
     end
 
     def validate_ownership(booking)
-      # binding.pry
       if current_user.role.nil?
         booking.user_id = current_user.id
       elsif booking.user_id.nil?
