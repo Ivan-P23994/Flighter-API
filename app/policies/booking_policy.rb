@@ -18,7 +18,7 @@ class BookingPolicy < ApplicationPolicy
     if admin?
       [:no_of_seats, :seat_price, :flight_id, :user_id]
     elsif admin? && !owner?
-      [:no_of_seats, :seat_price, :flight_id, ]
+      [:no_of_seats, :seat_price, :flight_id]
     else
       [:no_of_seats, :seat_price, :flight_id]
     end
@@ -53,7 +53,6 @@ class BookingPolicy < ApplicationPolicy
   private
 
   def owner?
-
     user.id == booking.user_id
   end
 end
