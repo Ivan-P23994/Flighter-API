@@ -17,7 +17,7 @@ module Api
 
     # POST /bookings
     def create
-      booking = authorize Booking.new(booking_params)
+      booking = Booking.new(booking_params)
       booking.update(permitted_attributes(booking))
 
       if booking.save
@@ -29,7 +29,7 @@ module Api
 
     # PATCH
     def update
-      booking = Booking.find(params[:id])
+      booking = authorize Booking.find(params[:id])
 
       if booking.update(permitted_attributes(booking))
         render json: BookingSerializer.render(booking, root: :booking), status: :ok
