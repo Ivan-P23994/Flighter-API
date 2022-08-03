@@ -48,6 +48,8 @@ class UserPolicy < ApplicationPolicy
     admin? || owner?
   end
 
+  private
+
   def admin?
     return if new_user?
 

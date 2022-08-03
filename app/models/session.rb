@@ -4,13 +4,13 @@ class Session
   def initialize(params)
     @email = params[:email]
     @password = params[:password]
+    @user = User.find_by(email: params[:email])
   end
 
   def valid?
     return false if user.nil?
 
-    # TODO: make use
-    user.authenticate(password) == false
+    user.authenticate(password) != false
   end
 
   def user
