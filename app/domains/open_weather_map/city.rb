@@ -27,7 +27,16 @@ module OpenWeatherMap
     end
 
     def <=>(other)
-      [temp, name.ord] <=> [other.temp, other.name.ord]
+      [temp, name] <=> [other.temp, other.name]
+    end
+
+    def nearby(count = 5)
+      response = HTTP.get("#{DOMAIN}find?lat=#{lat}&lon=#{lon}&cnt=#{count}&appid=#{API_KEY}")
+      response.parse.deep_symbolize_keys[:list].map { |city| OpenWeatherMap::City.parse(city) }
+    end
+
+    def coldest_nearby(*count)
+      nearby(*count).min
     end
   end
 end
