@@ -21,10 +21,12 @@ gem 'http'
 # gem 'rack-cors'
 
 group :development, :test do
+  gem 'bcrypt'
   gem 'blueprinter'
   gem 'factory_bot_rails'
   gem 'overcommit', require: false
   gem 'pry', '~> 0.13.1'
+  gem 'pundit', '~> 2.2'
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false

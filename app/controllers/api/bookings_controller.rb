@@ -1,19 +1,25 @@
 module Api
   class BookingsController < ApplicationController
+    before_action :authenticate
+
     # GET /Bookings
     def index
-      render json: BookingSerializer.render(Booking.all, root: :bookings), status: :ok
+      booking = policy_scope(Booking)
+      render json: BookingSerializer.render(booking, root: :bookings), status: :ok
     end
 
     # GET /Bookings/:id
     def show
-      booking = Booking.find(params[:id])
+      booking = authorize Booking.find(params[:id])
+
       render json: BookingSerializer.render(booking, root: :booking), status: :ok
     end
 
     # POST /bookings
     def create
       booking = Booking.new(booking_params)
+      booking.update(permitted_attributes(booking))
+      validate_ownership(booking)
 
       if booking.save
         render json: BookingSerializer.render(booking, root: :booking), status: :created
@@ -22,11 +28,11 @@ module Api
       end
     end
 
-    # UPDATE
+    # PATCH
     def update
-      booking = Booking.find(params[:id])
+      booking = authorize Booking.find(params[:id])
 
-      if booking.update(booking_params)
+      if booking.update(permitted_attributes(booking))
         render json: BookingSerializer.render(booking, root: :booking), status: :ok
       else
         render json: { errors: booking.errors }, status: :bad_request
@@ -35,14 +41,27 @@ module Api
 
     # DESTROY
     def destroy
-      Booking.find(params[:id]).destroy
+      booking = authorize Booking.find(params[:id])
+      booking.destroy
+
+      head :no_content
     end
 
     private
 
     def booking_params
-      params.require(:booking).permit(:id, :no_of_seats, :seat_price,
-                                      :flight_id, :user_id, :updated_at, :created_at)
+      params.require(:booking).permit(:no_of_seats, :seat_price,
+                                      :flight_id, :user_id)
+    end
+
+    def validate_ownership(booking)
+      if current_user.role.nil?
+        booking.user_id = current_user.id
+      elsif booking.user_id.nil?
+        booking.user_id == current_user.id
+      else
+        true
+      end
     end
   end
 end
