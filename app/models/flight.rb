@@ -34,6 +34,11 @@ class Flight < ApplicationRecord
   scope :filter_by_departs_at_eq, ->(time) { where('created_at == ?', time) }
   scope :filter_by_no_of_available_seats_qteq, ->(seats) { where('no_of_seats >= ?', seats) }
 
+  scope :overlapping_flights,
+        ->(departs_at, arrives_at) { # disable:rubocop Style/Lambda
+          where('(departs_at, arrives_at) OVERLAPS (?, ?)', departs_at, arrives_at)
+        }
+
   validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :company_id }
 
   validates :departs_at, presence: true
@@ -43,11 +48,18 @@ class Flight < ApplicationRecord
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
 
   validate :depart_time_valid?
+  validate :flight_overlapping?
 
   def depart_time_valid?
     return if (departs_at && arrives_at).nil?
     return if departs_at.before?(arrives_at)
 
     errors.add(:departs_at, message: 'departure must be before arrival')
+  end
+
+  def flight_overlapping?
+    return if company.flights.overlapping_flights(departs_at, arrives_at).first.nil?
+
+    errors.add(:flight, message: 'flight must not overlap')
   end
 end
