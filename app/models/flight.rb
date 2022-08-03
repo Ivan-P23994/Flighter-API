@@ -48,7 +48,7 @@ class Flight < ApplicationRecord
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
 
   validate :depart_time_valid?
-  validate :flight_overlapping?
+  validate :flight_overlapping?, on: [:create]
 
   def depart_time_valid?
     return if (departs_at && arrives_at).nil?
@@ -58,8 +58,9 @@ class Flight < ApplicationRecord
   end
 
   def flight_overlapping?
-    return if company.flights.overlapping_flights(departs_at, arrives_at).first.nil?
+    return if company.nil? || company.flights.empty?
+    return if company.flights.overlapping_flights(departs_at, arrives_at).empty?
 
-    errors.add(:flight, message: 'flight must not overlap')
+    errors.add(:departs_at, message: 'flight must not overlap')
   end
 end

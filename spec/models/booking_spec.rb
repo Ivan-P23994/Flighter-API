@@ -21,7 +21,7 @@ RSpec.describe Booking do
     end
 
     it 'does not validate when departs_at > DateTime.now' do
-      booking.flight.departs_at -= 1.year
+      booking.flight.departs_at -= (booking.flight.departs_at - DateTime.now) + 1.month
       booking.valid?
 
       expect(booking).to be_invalid

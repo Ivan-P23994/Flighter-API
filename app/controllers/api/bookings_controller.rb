@@ -7,7 +7,7 @@ module Api
       booking = policy_scope(Booking)
       booking = params[:filter].nil? ? booking : booking.active_flights
 
-      render json: BookingSerializer.render(booking, root: :bookings), status: :ok
+      render json: BookingSerializer.render(booking.includes([flight: [:company]]), root: :bookings), status: :ok
     end
 
     # GET /Bookings/:id

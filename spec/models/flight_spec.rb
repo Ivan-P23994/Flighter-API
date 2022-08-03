@@ -15,9 +15,10 @@ RSpec.describe Flight do
 
   describe '#depart_time_valid' do
     let(:flight) { create(:flight) }
+    let(:flight1) { create(:flight) }
 
     it 'validates when departs_at < arrives_at' do
-      expect(flight).to be_valid
+      expect(flight1).to be_valid
     end
 
     it 'does not validate when departs_at == arrives_at' do

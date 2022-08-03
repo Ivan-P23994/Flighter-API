@@ -5,7 +5,7 @@ module Api
     # GET /Flights
     def index
       flights = Flight.filter(params.slice(:name_cont, :departs_at_eq, :starts_with_qteq))
-      render json: FlightSerializer.render(flights.ascending, root: :flights)
+      render json: FlightSerializer.render(flights.includes([:company, :bookings]).ascending, root: :flights)
     end
 
     # GET /Flights/:id
