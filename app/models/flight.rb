@@ -32,7 +32,7 @@ class Flight < ApplicationRecord
 
   scope :filter_by_name_cont, ->(name) { where('name like ?', "#{name.downcase}%") }
   scope :filter_by_departs_at_eq, ->(time) { where('created_at == ?', time) }
-  scope :filter_by_no_of_available_seats_qteq, ->(seats) { where('no_of_seats <= ?', seats) }
+  scope :filter_by_no_of_available_seats_qteq, ->(seats) { where('no_of_seats >= ?', seats) }
 
   validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :company_id }
 
