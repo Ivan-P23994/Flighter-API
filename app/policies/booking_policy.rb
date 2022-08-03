@@ -35,13 +35,9 @@ class BookingPolicy < ApplicationPolicy
   end
 
   class Scope < Scope
-    def resolve
-      if user.role.nil?
-        scope.where(user_id: user.id)
-      else
-        scope.all
-      end
-    end
+    # def resolve
+    #   scope.all
+    # end
   end
 
   private

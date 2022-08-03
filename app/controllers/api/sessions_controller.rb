@@ -2,10 +2,9 @@ module Api
   class SessionsController < ApplicationController
     before_action :authenticate, only: [:destroy]
     def create
-      user = User.find_by(email: params[:session][:email])
+      session = Session.new(session_params)
 
-      if user.present? && user.authenticate(params[:session][:password]) # TODO: shift to session
-        session = Session.new(session_params)
+      if session.valid?
         render json: SessionSerializer.render(session, root: :session), status: :created
       else
         render json: { errors: { credentials: ['are invalid'] } }, status: :bad_request
