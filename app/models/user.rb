@@ -18,10 +18,17 @@
 #  index_users_on_token  (token) UNIQUE
 #
 class User < ApplicationRecord
+  include Filterable
   # before_save { self.email = email.downcase }
   has_secure_password
   has_secure_token
   has_many :bookings, dependent: :destroy
+
+  scope :ascending, -> { order(email: :asc) }
+
+  scope :filter_by_first_name, ->(first_name) { where('name like ?', "#{first_name.downcase}%") }
+  scope :filter_by_last_name, ->(last_name) { where('name like ?', "#{last_name.downcase}%") }
+  scope :filter_by_email, ->(email) { where('name like ?', "#{email.downcase}%") }
 
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :token, uniqueness: true
