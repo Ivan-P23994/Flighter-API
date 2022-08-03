@@ -22,8 +22,17 @@
 #  fk_rails_...  (company_id => companies.id)
 #
 class Flight < ApplicationRecord
+  include Filterable
+
   belongs_to :company
   has_many :bookings, dependent: :destroy
+
+  scope :ascending, -> { order(departs_at: :asc, name: :asc, created_at: :asc) }
+  scope :active_flights, -> { where('flights.departs_at > ?', DateTime.now) }
+
+  scope :filter_by_name_cont, ->(name) { where('name like ?', "#{name.downcase}%") }
+  scope :filter_by_departs_at_eq, ->(time) { where('created_at == ?', time) }
+  scope :filter_by_no_of_available_seats_qteq, ->(seats) { where('no_of_seats <= ?', seats) }
 
   validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :company_id }
 

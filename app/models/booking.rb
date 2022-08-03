@@ -27,7 +27,6 @@ class Booking < ApplicationRecord
   default_scope { order(created_at: :asc) }
 
   scope :active_flights, -> { joins(:flight).where('flights.departs_at > ?', DateTime.now) }
-  # scope :remaining_seats, ->
 
   validates :seat_price, presence: true, numericality: { greater_than: 0 }
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
