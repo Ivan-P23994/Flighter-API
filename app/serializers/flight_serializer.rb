@@ -18,10 +18,10 @@ class FlightSerializer < Blueprinter::Base
   end
 
   field :current_price do |flight, _options|
-    if flight.days_to_flight >= 15
-      flight.base_price
-    elsif (flight.departs_at - DateTime.now) <= 0
+    if (flight.departs_at - DateTime.now) <= 0
       flight.base_price * 2
+    elsif flight.days_to_flight >= 15
+      flight.base_price
     else
       flight.base_price + (flight.base_price * (flight.days_to_flight / 15.00)).to_i
     end
