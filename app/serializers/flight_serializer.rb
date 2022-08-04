@@ -21,7 +21,7 @@ class FlightSerializer < Blueprinter::Base
     if DateTime.now >= flight.departs_at
       flight.base_price
     else
-      flight.base_price + (flight.base_price * (flight.departs_at - DateTime.now).to_i / 15)
+      flight.base_price + (flight.base_price * (flight.days_to_flight / 15))
     end
   end
   association :company, blueprint: CompanySerializer

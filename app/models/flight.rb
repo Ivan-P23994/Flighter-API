@@ -30,8 +30,8 @@ class Flight < ApplicationRecord
   scope :ascending, -> { order(departs_at: :asc, name: :asc, created_at: :asc) }
   scope :active_flights, -> { where('flights.departs_at > ?', DateTime.now) }
 
-  scope :filter_by_name_cont, ->(name) { where('name like ?', "#{name.downcase}%") }
-  scope :filter_by_departs_at_eq, ->(time) { where('created_at == ?', time) }
+  scope :filter_by_name_cont, ->(name) { where('name ilike ?', "#{name}%") }
+  scope :filter_by_departs_at_eq, ->(time) { where('created_at = ?', time) }
   scope :filter_by_no_of_available_seats_qteq, ->(seats) { where('no_of_seats >= ?', seats) }
 
   scope :overlapping_flights,
@@ -64,14 +64,7 @@ class Flight < ApplicationRecord
     errors.add(:departs_at, message: 'flight must not overlap')
   end
 
-  def create_timestamp
-    # Create the DateTime
-    date = day.to_datetime + time.seconds_since_midnight.seconds
-    # Set the timezone in which you want to interpret the time
-    zone = 'CEST'
-    # Find the offset from UTC taking into account daylight savings
-    offset = DateTime.now.in_time_zone(zone).utc_offset / 3600
-    # Back out the difference to find the adjusted UTC time and save it as UTC with the correct time
-    self.departs_at = date - offset.hours
+  def days_to_flight
+    (Time.zone.now.to_date - flight.departs_at.to_date).round
   end
 end
