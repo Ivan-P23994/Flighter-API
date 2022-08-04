@@ -35,4 +35,24 @@ RSpec.describe Flight do
       expect(flight).to be_invalid
     end
   end
+
+  describe '.flight_overlapping? when flight valid' do
+    let(:company) { create(:company) }
+    let(:flight1) { create(:flight) }
+    let(:flight2) { create(:flight) }
+
+    it 'validates when flights do not overlap' do
+      expect(flight2).to be_valid
+    end
+  end
+
+  describe '.flight_overlapping? when flight invalid' do
+    let(:company) { create(:company) }
+    let(:flight1) { create(:flight, company_id: company.id, departs_at: DateTime.now, arrives_at: DateTime.now + 1.day) }         # rubocop:disable Layout/LineLength
+    let(:flight2) { build(:flight, company_id: company.id, departs_at: DateTime.now, arrives_at: flight1.arrives_at) }           # rubocop:disable Layout/LineLength
+
+    it 'does not validates when flights overlap' do
+      expect(flight2).to be_invalid
+    end
+  end
 end
