@@ -5,7 +5,7 @@ module Api
     def index
       authorize current_user
 
-      users = params[:filter].nil? ? User.all : User.filter(filter_params)
+      users = filter_params.empty? ? User.all : User.filter(filter_params)
       render json: UserSerializer.render(users.ascending, root: :users)
     end
 
@@ -53,7 +53,7 @@ module Api
     end
 
     def filter_params
-      params[:filter].slice(:first_name, :last_name, :email)
+      params.slice(:first_name, :last_name, :email)
     end
   end
 end

@@ -35,7 +35,7 @@ class Flight < ApplicationRecord
   scope :filter_by_no_of_available_seats_qteq, ->(seats) { where('no_of_seats >= ?', seats) }
 
   scope :overlapping_flights,
-        lambda { |departs_at, arrives_at| # disable:rubocop Style/Lambda
+        lambda { |departs_at, arrives_at|
           where('(departs_at, arrives_at) OVERLAPS (?, ?)', departs_at, arrives_at)
         }
 

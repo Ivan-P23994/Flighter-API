@@ -38,7 +38,7 @@ RSpec.describe 'Users', type: :request do
     context 'with authenticated & authorized user and various filters' do
       it 'returns a list of filtered users with status code :ok (200) using one filter' do
         get '/api/users',
-            params: { filter: { first_name: admin.first_name } },
+            params: { first_name: admin.first_name },
             headers: api_headers(admin.token)
 
         expect(response).to have_http_status(:ok)
@@ -47,8 +47,7 @@ RSpec.describe 'Users', type: :request do
 
       it 'returns a list of filtered users with status code :ok (200) using two filters' do
         get '/api/users',
-            params: { filter: { first_name: admin.first_name,
-                                last_name: admin.last_name } },
+            params: { first_name: admin.first_name, last_name: admin.last_name },
             headers: api_headers(admin.token)
 
         expect(response).to have_http_status(:ok)
@@ -57,9 +56,9 @@ RSpec.describe 'Users', type: :request do
 
       it 'returns a list of filtered users with status code :ok (200) using three filters' do
         get '/api/users',
-            params: { filter: { first_name: admin.first_name,
-                                last_name: admin.last_name,
-                                email: admin.email } },
+            params: { first_name: admin.first_name,
+                      last_name: admin.last_name,
+                      email: admin.email },
             headers: api_headers(admin.token)
 
         expect(response).to have_http_status(:ok)
