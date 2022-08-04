@@ -26,9 +26,9 @@ class User < ApplicationRecord
 
   scope :ascending, -> { order(email: :asc) }
 
-  scope :filter_by_first_name, ->(first_name) { where('name like ?', "#{first_name.downcase}%") }
-  scope :filter_by_last_name, ->(last_name) { where('name like ?', "#{last_name.downcase}%") }
-  scope :filter_by_email, ->(email) { where('name like ?', "#{email.downcase}%") }
+  scope :filter_by_first_name, ->(first_name) { where('first_name like ?', "#{first_name}%") }
+  scope :filter_by_last_name, ->(last_name) { where('last_name like ?', "#{last_name}%") }
+  scope :filter_by_email, ->(email) { where('email like ?', "#{email.downcase}%") }
 
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :token, uniqueness: true

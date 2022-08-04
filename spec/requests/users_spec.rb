@@ -34,6 +34,38 @@ RSpec.describe 'Users', type: :request do
         expect(json_body['users'].count).to eq(5)
       end
     end
+
+    context 'with authenticated & authorized user and various filters' do
+      it 'returns a list of filtered users with status code :ok (200) using one filter' do
+        get '/api/users',
+            params: { filter: { first_name: admin.first_name } },
+            headers: api_headers(admin.token)
+
+        expect(response).to have_http_status(:ok)
+        expect(json_body['users'].count).to eq(1)
+      end
+
+      it 'returns a list of filtered users with status code :ok (200) using two filters' do
+        get '/api/users',
+            params: { filter: { first_name: admin.first_name,
+                                last_name: admin.last_name } },
+            headers: api_headers(admin.token)
+
+        expect(response).to have_http_status(:ok)
+        expect(json_body['users'].count).to eq(1)
+      end
+
+      it 'returns a list of filtered users with status code :ok (200) using three filters' do
+        get '/api/users',
+            params: { filter: { first_name: admin.first_name,
+                                last_name: admin.last_name,
+                                email: admin.email } },
+            headers: api_headers(admin.token)
+
+        expect(response).to have_http_status(:ok)
+        expect(json_body['users'].count).to eq(1)
+      end
+    end
   end
 
   describe 'GET /users/:id' do

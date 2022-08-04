@@ -41,6 +41,21 @@ RSpec.describe 'Booking', type: :request do
         expect(json_body['bookings'].count).to eq(3)
       end
     end
+
+    context 'with authenticated & authorized user and active filter' do
+      before { create_list(:booking, 3, user_id: user.id) }
+
+      let(:user) { create(:user, role: 'admin') }
+
+      it 'successfully returns a list of bookings with status code :ok (200)' do
+        get '/api/bookings',
+            params: { filter: 'active' }.to_json,
+            headers: api_headers(user.token)
+
+        expect(response).to have_http_status(:ok)
+        expect(json_body['bookings'].count).to eq(3)
+      end
+    end
   end
 
   describe 'GET /api/booking/:id' do

@@ -4,8 +4,10 @@ module Api
 
     # GET /Flights
     def index
-      flights = Flight.filter(params.slice(:name_cont, :departs_at_eq, :starts_with_qteq))
-      render json: FlightSerializer.render(flights.includes([:company, :bookings]).ascending, root: :flights)
+      # binding.pry
+      flights = Flight.filter(filter_params)
+      render json: FlightSerializer.render(flights.includes([:company, :bookings])
+                                   .ascending, root: :flights)
     end
 
     # GET /Flights/:id
@@ -48,6 +50,10 @@ module Api
       params.require(:flight)
             .permit(:id, :departs_at, :arrives_at, :name,
                     :no_of_seats, :company_id, :base_price)
+    end
+
+    def filter_params
+      params[:filter].slice(:name_cont, :departs_at_eq, :no_of_available_seats_qteq)
     end
   end
 end
