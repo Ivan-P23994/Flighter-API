@@ -65,6 +65,6 @@ class Flight < ApplicationRecord
   end
 
   def days_to_flight
-    (Time.zone.now - departs_at).abs.round / 86_400
+    15 - ((Time.zone.now - departs_at).abs.round / 86_400)
   end
 end
