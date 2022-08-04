@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
   scope :ascending, -> { order(email: :asc) }
 
-  scope :lf_user, ->(str) { where('first_name like :q OR last_name LIKE :q OR email LIKE :q', q: "%#{str.downcase}%") } # rubocop:disable Layout/LineLength
+  scope :lf_user, ->(str) { where('first_name ilike :q OR last_name ilike :q OR email ilike :q', q: "%#{str}%") } # rubocop:disable Layout/LineLength
 
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :token, uniqueness: true
