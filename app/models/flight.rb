@@ -28,7 +28,7 @@ class Flight < ApplicationRecord
   has_many :bookings, dependent: :destroy
 
   scope :ascending, -> { order(departs_at: :asc, name: :asc, created_at: :asc) }
-  scope :active_flights, -> { where('flights.departs_at > ?', DateTime.now) }
+  scope :active_flights, -> { where('departs_at > ?', DateTime.now) }
 
   scope :filter_by_name_cont, ->(name) { where('name ilike ?', "#{name}%") }
   scope :filter_by_departs_at_eq, ->(time) { where('created_at = ?', time) }
