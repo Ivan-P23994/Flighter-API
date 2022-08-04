@@ -4,7 +4,8 @@ module Api
     # GET /companies
     def index
       companies = params[:filter].nil? ? Company.all : Company.active_flights
-      render json: CompanySerializer.render(companies.ascending, root: :companies)
+
+      render json: CompanySerializer.render(companies.ascending.uniq, root: :companies)
     end
 
     # GET /companies/:id
