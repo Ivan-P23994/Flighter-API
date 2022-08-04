@@ -4,7 +4,8 @@ module Api
     # GET /users
     def index
       authorize current_user
-      users = filter_params.nil? ? User.all : User.filter(filter_params)
+      # binding.pry
+      users = params[:query].nil? ? User.all : User.lf_user(params[:query])
       render json: UserSerializer.render(users.ascending, root: :users)
     end
 
@@ -49,13 +50,6 @@ module Api
 
     def user_params
       params.require(:user).permit(:id, :first_name, :last_name, :email, :password)
-    end
-
-    def filter_params
-      return if params[:query].nil?
-
-      filters = params[:query].keys.map(&:to_sym)
-      params[:query].slice(*filters)
     end
   end
 end
