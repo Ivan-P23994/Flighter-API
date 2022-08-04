@@ -61,7 +61,7 @@ class Flight < ApplicationRecord
     return if company.nil? || company.flights.empty?
     return if company.flights.overlapping_flights(departs_at, arrives_at).empty?
 
-    errors.add(:departs_at, message: 'flight must not overlap')
+    errors.add(:arrives_at, message: 'flight must not overlap')
   end
 
   def days_to_flight
