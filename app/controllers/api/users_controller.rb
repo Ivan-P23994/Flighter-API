@@ -5,7 +5,7 @@ module Api
     def index
       authorize current_user
 
-      users = User.filter(filter_params)
+      users = params[:filter].nil? ? User.all : User.filter(filter_params)
       render json: UserSerializer.render(users.ascending, root: :users)
     end
 
