@@ -39,7 +39,7 @@ RSpec.describe 'Flights', type: :request do
     context 'with authenticated & authorized user and various filters' do
       it 'returns a list of filtered users with status code :ok (200) using one filter' do
         get '/api/flights',
-            params: { filter: { name_cont: Flight.first.name } },
+            params: { name_cont: Flight.first.name },
             headers: api_headers(user.token)
 
         expect(response).to have_http_status(:ok)
@@ -48,8 +48,8 @@ RSpec.describe 'Flights', type: :request do
 
       it 'returns a list of filtered users with status code :ok (200) using two filters' do
         get '/api/flights',
-            params: { filter: { name_cont: Flight.first.name,
-                                no_of_available_seats_gteq: Flight.first.no_of_seats } },
+            params: { name_cont: Flight.first.name,
+                      no_of_available_seats_gteq: Flight.first.no_of_seats },
             headers: api_headers(user.token)
 
         expect(response).to have_http_status(:ok)
