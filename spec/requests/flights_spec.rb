@@ -37,7 +37,7 @@ RSpec.describe 'Flights', type: :request do
     end
 
     context 'with authenticated & authorized user and various filters' do
-      it 'returns a list of filtered users with status code :ok (200) using one filter' do
+      it 'returns a list of filtered users with status code :ok (200) using name filter' do
         get '/api/flights',
             params: { name_cont: Flight.first.name },
             headers: api_headers(user.token)
