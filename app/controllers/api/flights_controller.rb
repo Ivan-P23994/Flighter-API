@@ -53,7 +53,6 @@ module Api
     end
 
     def filter_params
-      params.keys.map(&:to_sym)
       params.slice(:name_cont, :departs_at_eq, :no_of_available_seats_qteq)
     end
   end
