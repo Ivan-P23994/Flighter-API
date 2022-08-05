@@ -31,7 +31,7 @@ class Flight < ApplicationRecord
   scope :active_flights, -> { where('departs_at > ?', DateTime.now) }
 
   scope :filter_by_name_cont, ->(name) { where('name ilike ?', "%#{name}%") }
-  scope :filter_by_departs_at_eq, ->(time) { where("date_trunc('minute', departs_at) = ?", time) }
+  scope :filter_by_departs_at_eq, ->(time) { where("date_trunc('minute', departs_at) = ?", time.slice(0..15)) } # rubocop:disable Style/LineLength
   scope :filter_by_no_of_available_seats_qteq, ->(seats) { where('no_of_seats >= ?', seats) }
 
   scope :overlapping_flights,
