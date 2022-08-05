@@ -43,7 +43,7 @@ class Booking < ApplicationRecord
 
   def no_of_seats_valid?
     return if no_of_seats.nil? || flight.nil?
-    return if no_of_seats <= flight.no_of_seats
+    return if (flight.bookings.sum(&:no_of_seats) + no_of_seats) <= flight.no_of_seats
 
     errors.add(:no_of_seats, 'seat number higher than available ')
   end
