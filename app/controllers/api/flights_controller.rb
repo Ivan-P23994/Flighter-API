@@ -6,8 +6,7 @@ module Api
     def index
       flights = filter_params.nil? ? Flight.all : Flight.filter(filter_params)
 
-      render json: FlightSerializer.render(flights.includes([:company, :bookings])
-                                   .active_flights.ascending, root: :flights)
+      render json: FlightSerializer.render(flights.includes([:company, :bookings]), root: :flights)
     end
 
     # GET /Flights/:id
