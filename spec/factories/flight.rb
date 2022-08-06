@@ -7,4 +7,10 @@ FactoryBot.define do
     base_price { rand(1..150) }
     company { association :company }
   end
+
+  def flight_with_bookings(bookings_count: 5)
+    FactoryBot.create(:flight) do |flight|
+      FactoryBot.create_list(:booking, bookings_count, flight: flight)
+    end
+  end
 end
