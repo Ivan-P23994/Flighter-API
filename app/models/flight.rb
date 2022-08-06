@@ -30,7 +30,7 @@ class Flight < ApplicationRecord
   scope :ascending, -> { order(departs_at: :asc, name: :asc, created_at: :asc) }
   scope :active_flights, -> { where('departs_at > ?', DateTime.now) }
 
-  scope :filter_by_name_cont, ->(name) { where('name = ?', name) }
+  scope :filter_by_name_cont, ->(name) { where('name ilike ?', "%#{name}%") }
   scope :filter_by_departs_at_eq, ->(time) { where("date_trunc('minute', departs_at) = ?", time.slice(0..15)) } # rubocop:disable Layout/LineLength
   scope :filter_by_no_of_available_seats_qteq,
         lambda { |seats|
