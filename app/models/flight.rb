@@ -36,7 +36,7 @@ class Flight < ApplicationRecord
         lambda { |seats|
           left_joins(:bookings)
             .group(:id)
-            .having('flights.no_of_seats - COALESCE(SUM(bookings.no_of_seats), flights.no_of_seats) >=  ?', seats)   # rubocop:disable Layout/LineLength
+            .having('(flights.no_of_seats - COALESCE(SUM(bookings.no_of_seats), flights.no_of_seats)) >=  ?', seats)   # rubocop:disable Layout/LineLength
         }
 
   scope :overlapping_flights,
