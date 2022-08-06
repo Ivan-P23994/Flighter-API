@@ -31,12 +31,12 @@ class Flight < ApplicationRecord
   scope :active_flights, -> { where('departs_at > ?', DateTime.now) }
 
   scope :filter_by_name_cont, ->(name) { where('name ilike ?', "%#{name}%") }
-  scope :filter_by_departs_at_eq, ->(time) { where("date_trunc('minute', departs_at) = ?", time.slice(0..15)) } # rubocop:disable Style/LineLength
+  scope :filter_by_departs_at_eq, ->(time) { where("date_trunc('minute', departs_at) = ?", time.slice(0..15)) } # rubocop:disable Layout/LineLength
   scope :filter_by_no_of_available_seats_qteq,
         lambda { |seats|
           left_joins(:bookings)
             .group(:id)
-            .having('flights.no_of_seats - COALESCE(SUM(bookings.no_of_seats), flights.no_of_seats) >=  ?', seats)   # rubocop:disable Style/LineLength
+            .having('flights.no_of_seats - COALESCE(SUM(bookings.no_of_seats), flights.no_of_seats) >=  ?', seats)   # rubocop:disable Layout/LineLength
         }
 
   scope :overlapping_flights,
