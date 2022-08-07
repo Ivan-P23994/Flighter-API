@@ -34,8 +34,8 @@ class Flight < ApplicationRecord
   scope :filter_by_departs_at_eq, ->(time) { where("date_trunc('minute', departs_at) = ?", time.slice(0..15)) } # rubocop:disable Layout/LineLength
   scope :filter_by_no_of_available_seats_qteq,
         lambda { |seats|
-          active_flights
-            .left_joins(:bookings)
+          left_joins(:bookings)
+            .where('flights.departs_at > ?', DateTime.now)
             .group(:id)
             .having('flights.no_of_seats - COALESCE(SUM(bookings.no_of_seats), flights.no_of_seats) >=  ?', seats)   # rubocop:disable Layout/LineLength
         }
