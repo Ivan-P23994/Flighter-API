@@ -18,10 +18,15 @@
 #  index_users_on_token  (token) UNIQUE
 #
 class User < ApplicationRecord
+  include Filterable
   # before_save { self.email = email.downcase }
   has_secure_password
   has_secure_token
   has_many :bookings, dependent: :destroy
+
+  scope :ascending, -> { order(email: :asc) }
+
+  scope :lf_user, ->(str) { where('first_name ilike :q OR last_name ilike :q OR email ilike :q', q: "%#{str}%") } # rubocop:disable Layout/LineLength
 
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :token, uniqueness: true

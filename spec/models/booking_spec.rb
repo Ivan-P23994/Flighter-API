@@ -21,9 +21,27 @@ RSpec.describe Booking do
     end
 
     it 'does not validate when departs_at > DateTime.now' do
-      booking.flight.departs_at -= 1.year
+      booking.flight.departs_at -= (booking.flight.departs_at - DateTime.now) + 1.month
       booking.valid?
 
+      expect(booking).to be_invalid
+    end
+  end
+
+  describe '#no_of_seats_valid?' do
+    let(:flight) { create(:flight, no_of_seats: 200) }
+    let(:booking) { create(:booking, flight_id: flight.id, no_of_seats: 2) }
+
+    it 'validates when no_of_seats <= flight.no_of_seats' do
+      expect(booking).to be_valid
+    end
+  end
+
+  describe 'no_of_seats_valid?' do
+    let(:flight) { create(:flight, no_of_seats: 200) }
+    let(:booking) { build(:booking, flight_id: flight.id, no_of_seats: 202) }
+
+    it 'does not validates when no_of_seats > flight.no_of_seats' do
       expect(booking).to be_invalid
     end
   end

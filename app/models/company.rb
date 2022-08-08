@@ -15,4 +15,7 @@ class Company < ApplicationRecord
   has_many :flights, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  scope :ascending, -> { order(name: :ASC) }
+  scope :active_flights, -> { joins(:flights).where('flights.departs_at > ?', DateTime.now) }
 end

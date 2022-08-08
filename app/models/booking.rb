@@ -22,17 +22,29 @@
 #
 class Booking < ApplicationRecord
   belongs_to :user
-  belongs_to :flight
+  belongs_to :flight, -> { order(departs_at: :asc, name: :asc) }, inverse_of: :bookings
+
+  default_scope { order(created_at: :asc) }
+
+  scope :active_flights, -> { joins(:flight).where('flights.departs_at > ?', DateTime.now) }
 
   validates :seat_price, presence: true, numericality: { greater_than: 0 }
   validates :no_of_seats, presence: true, numericality: { greater_than: 0 }
 
   validate :departure_time_valid?
+  validate :no_of_seats_valid?
 
   def departure_time_valid?
     return if flight.nil?
     return if flight.departs_at > DateTime.now
 
     errors.add(:flight, 'departure time can not be in the past')
+  end
+
+  def no_of_seats_valid?
+    return if no_of_seats.nil? || flight.nil?
+    return if flight.bookings.sum(&:no_of_seats) <= flight.no_of_seats
+
+    errors.add(:no_of_seats, 'seat number higher than available ')
   end
 end

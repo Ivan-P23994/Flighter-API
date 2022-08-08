@@ -34,6 +34,17 @@ RSpec.describe 'Companies', type: :request do
         expect(json_body['companies'].count).to eq(2)
       end
     end
+
+    context 'with authenticated & authorized user with active filter' do
+      it 'successfully returns a list of companies' do
+        get '/api/companies',
+            params: { filter: 'active' }.to_json,
+            headers: api_headers(user.token)
+
+        expect(response).to have_http_status(:ok)
+        expect(json_body['companies'].count).to eq(2)
+      end
+    end
   end
 
   describe 'GET api/companies/:id' do
