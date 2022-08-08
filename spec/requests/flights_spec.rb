@@ -1,7 +1,7 @@
 RSpec.describe 'Flights', type: :request do
   let(:user) { create(:user) }
   let(:admin) { create(:user, role: 'admin') }
-  let(:flight) { create(:flight) }
+  let(:flight) { create(:flight, no_of_seats: 50) }
   let(:flight2) { create(:flight) }
   let(:company) { create(:company) }
 
@@ -38,13 +38,13 @@ RSpec.describe 'Flights', type: :request do
     end
 
     context 'with authenticated & authorized user and various filters' do
-      it 'returns a list of filtered users with status code :ok (200) using name filter' do
+      it 'returns a list of filtered users with status code :ok (200) using two filters' do
         get '/api/flights',
-            params: { name_cont: Flight.first.name },
+            params: { no_of_available_seats_gteq: 40 },
             headers: api_headers(user.token)
 
         expect(response).to have_http_status(:ok)
-        expect(json_body['flights'].count).to eq(1)
+        expect(json_body['flights'].count).to eq(4)
       end
     end
   end
