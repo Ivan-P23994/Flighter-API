@@ -46,19 +46,6 @@ RSpec.describe 'Flights', type: :request do
         expect(response).to have_http_status(:ok)
         expect(json_body['flights'].count).to eq(1)
       end
-
-      it 'returns a list of filtered users with status code :ok (200) using two filters' do
-        let(:flight11) { create(:flight, no_of_seats: 3000) }
-        create_list(:booking, 2, flight_id: flight.id)
-        create_list(:booking, 5, flight_id: flight2.id)
-        get '/api/flights',
-            params: { name_cont: flight11.name,
-                      no_of_available_seats_gteq: 3000 },
-            headers: api_headers(user.token)
-
-        expect(response).to have_http_status(:ok)
-        expect(json_body['flights'].count).to eq(1)
-      end
     end
   end
 
