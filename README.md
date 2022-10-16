@@ -23,9 +23,46 @@ The following are the features enabled by this part of the API:
 ### Second Part
 
 The second part consisted of adding CRUD controllers, routes and models together with serializers for every resource using the 'blueprinter' gem.
-Which was followed by adding unit tests for the models in questions using the 'shoulda-matchers' gem.
+Which was followed by adding unit tests for the models in question, while using the 'shoulda-matchers' gem.
 
-Furthermore I wanted to add the ability for the user to register, so I intergrated 'has_secure_password' class method and added password_digest column to the User model. To include the ability to login I created a session controller which uses the 'has_secure_token' class method‚ the request to login contains an email and password and responds with a session token and user information. After login subsequent resquests are authenticated via session token which is provided in the Authorization header, the authorisation concerns were done using the 'Pundit' gem.  Successful logout destroys the session boject and regenerates the token for the currently authenticated user. Every new functionaliy implementation was backed up by request tests.
+
+Furthermore I wanted to add the ability for the user to register, so I intergrated 'has_secure_password' class method and added password_digest column to the User model. The goal was to add the following functionality: 
+
+ - Users can successfully register with a password
+ - Users can't register without password
+ - Users can successfully change password
+ - Users can’t unset password (password: nil)
+
+To include the ability to login I created a session controller which uses the 'has_secure_token' class method. The request and response were suposed to follow the following logic:
+
+- Request contains email and password
+- Response contains session token
+- Response contains user information
+
+After login subsequent resquests are authenticated via session token which is provided in the Authorization header, the authorisation concerns were done using the 'Pundit' gem. Additionaly I added a role attribute to the User model("admin" & nil).
+The implemented authentications should yield the following constraints:
+
+- Everyone can list and show companies and flights resources, even unauthorised requests
+- Only authenticated requests can consume:
+  - users resource
+  - bookings resource
+ 
+# User Authentication Permissions
+
+- Only administrators can create, update and delete companies and flights resources
+- Only administrators can list user resources
+- Administrators can show/update/delete all user resources, others can act only on their own data
+- Only administrators can update role attribute
+- User shouldn't see other bookings from other users after creating a booking it should be owned by currently authenticated user
+- Users should not be able to change ownership of the booking
+
+# Booking Authentication Permissions
+
+- Administrators can list all booking resources authenticated users can list only their own booking resources
+- Administrators can show/update/delete all booking resources, others can act only on their own resources only administrators can update user_id attribute
+
+
+Successful logout destroys the session boject and regenerates the token for the currently authenticated user. Every new functionaliy implementation was backed up by request tests.
 
 To round it all up I added both rails and custom constraints to the models. Lastly I added support for active filters using scopes and queries.
 
