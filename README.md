@@ -67,7 +67,7 @@ The implemented authentications should yield the following constraints:
 Successful logout destroys the session object and regenerates the token for the currently authenticated user. Every new functionaliy implementation was backed up by request tests. To top it off I added various filter supports for most of the resources using both rails scopes and manual SQL queries.
 
 
-# How to run this app locally?
+# How to run this locally?
 
 - Clone the repository
  ```bash
