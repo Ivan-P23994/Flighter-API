@@ -65,6 +65,27 @@ The implemented authentications should yield the following constraints:
 Successful logout destroys the session object and regenerates the token for the currently authenticated user. Every new functionaliy implementation was backed up by request tests. To top it off I added various filter supports for most of the resources using both rails scopes and manual SQL queries.
 
 
+# How to run this app locally?
 
+- Clone the repository
+ ```bash
+  git clone https://github.com/Ivan-P23994/Flighter-API.git
+```
+- Navigate to the project directory
+
+```bash
+  cd Flighter-API
+```
+- Install dependencies
+
+```bash
+  bundle install
+```
+
+- Set up the database
+
+```bash
+  rails db:setup
+```
 
 
