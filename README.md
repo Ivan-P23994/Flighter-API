@@ -58,8 +58,10 @@ The implemented authentications should yield the following constraints:
 
 ### Booking Authentication Permissions
 
-- Administrators can list all booking resources authenticated users can list only their own booking resources
-- Administrators can show/update/delete all booking resources, others can act only on their own resources only administrators can update user_id attribute
+- Administrators can list all booking resources authenticated 
+- Users can list only their own booking resources
+- Administrators can show/update/delete all booking resources, others can act only on their own resources only 
+- Administrators can update user_id attribute
 
 
 Successful logout destroys the session object and regenerates the token for the currently authenticated user. Every new functionaliy implementation was backed up by request tests. To top it off I added various filter supports for most of the resources using both rails scopes and manual SQL queries.
