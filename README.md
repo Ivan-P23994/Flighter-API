@@ -83,11 +83,3 @@ Successful logout destroys the session object and regenerates the token for the 
 ```bash
   bundle install
 ```
-
-- Set up the database
-
-```bash
-  rails db:setup
-```
-
-
