@@ -3,7 +3,8 @@
 
 ![db](https://user-images.githubusercontent.com/101200406/196042017-61d9c2d6-b804-4c15-9c1e-6a115547088a.png)
 
-This projects main goal was to display my abilities in terms of building a Ruby on Rails API. 
+This project is divided into two parts.
+The first part of this project is a weather module that is connected to the 'open weather map'(OVM), depending on the provided city name and request parameters the OVM returns a JSON response related to the city object. the second part consists of four models(User, Company, Flight and Booking) that together with their database relations and constraints allow for an user to register, login and logout. Upon creating an user session, depending on the user role the user has access to various actions restricted by his role(admin & basic user) which are explained in detail below.
 
 ## 👾 Tech Stack
 
@@ -17,7 +18,7 @@ The following are the features enabled by this part of the API:
 
 - Ability to fetch the current weather for a single city name
 - Ability to fetch the current weather for multiple cities
-- Ability to fetch the current weather for a single city and multiple cities in the vicitiny(as compared to longitude and latitude)
+- Ability to fetch the current weather for a single city and multiple cities in the vicinity(as compared to longitude and latitude)
 - Ability to fetch the current weather for multiple cities and return the city with the coldest temperature among them
 
 ## Second Part
