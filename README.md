@@ -4,7 +4,8 @@
 ![db](https://user-images.githubusercontent.com/101200406/196042017-61d9c2d6-b804-4c15-9c1e-6a115547088a.png)
 
 This project is divided into two parts.
-The first part of this project is a weather module that is connected to the 'open weather map'(OVM), depending on the provided city name and request parameters the OVM returns a JSON response related to the city object. the second part consists of four models(User, Company, Flight and Booking) that together with their database relations and constraints allow for an user to register, login and logout. Upon creating an user session, depending on the user role the user has access to various actions restricted by his role(admin & basic user) which are explained in detail below.
+The first part of this project is a weather module that is connected to the 'open weather map'(OVM), depending on the provided city name and request parameters the OVM returns a JSON response related to the city object.
+The second part consists of four models(User, Company, Flight and Booking) that together with their database relations and constraints allow for an user to register, login and logout. Upon creating an user session, depending on the user role the user has access to various actions restricted by his role(admin & basic user) which are explained in detail below.
 
 ## 👾 Tech Stack
 
