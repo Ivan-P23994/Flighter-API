@@ -8,7 +8,7 @@
 #  last_name       :string
 #  password_digest :text             not null
 #  role            :string
-#  token           :text
+#  token           :text             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
