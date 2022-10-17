@@ -35,7 +35,7 @@ Furthermore I wanted to add the ability for the user to register, so I intergrat
  - Users can successfully change password
  - Users can’t unset password (password: nil)
 
-To include the ability to login I created a session controller which uses the 'has_secure_token' class method. The request and response were suposed to follow the following logic:
+To include the ability to login I created a session controller and model which uses the 'has_secure_token' class method. The request and response were suposed to follow the following logic:
 
 - Request contains email and password
 - Response contains session token
