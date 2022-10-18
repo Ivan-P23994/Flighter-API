@@ -86,15 +86,6 @@ Successful logout destroys the session object and regenerates the token for the 
   bundle install
 ```
 
-- Create your database
-```bash
-  rails db:create infinum
-```
-
-- Run migrations
-```bash
-  rails db:migrate
-```
 ### To Run Tests
 
 ```bash
