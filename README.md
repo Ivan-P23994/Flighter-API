@@ -5,9 +5,11 @@
 
 This project is divided into two parts.
 </br>
-The first part of this project is a weather module that is connected to the 'open weather map'(OVM) API, depending on the provided city name and request parameters the OVM API returns a JSON response related to the city object.
 </br>
-The second part consists of four models(User, Company, Flight and Booking) that together with their database relations and constraints allow for an user to register, login and logout. Upon creating an user session, depending on the user role the user has access to various actions restricted by his role(admin & basic user) which are explained in detail below.
+<b>The first part</b> of this project is a weather module that is connected to the 'open weather map'(OVM) API, depending on the provided city name and request parameters the OVM API returns a JSON response related to the city object.
+</br>
+</br>
+<b>The second part</b> consists of four models(User, Company, Flight and Booking) that together with their database relations and constraints allow for an user to register, login and logout. Upon creating an user session, depending on the user role the user has access to various actions restricted by his role(admin & basic user) which are explained in detail below.
 
 ## 👾 Tech Stack
 
